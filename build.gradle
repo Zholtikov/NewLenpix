@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
+    id 'org.beryx.jlink' version '2.9.4'
+}
+
+group 'ru.lenpix'
+version '0.1-SNAPSHOT'
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.5.0-M1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.0-M1'
+}
+
+application {
+    mainClassName = "ru.lenpix.MainForm"
+}
+
+javafx {
+    version = "11"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+jlink {
+    launcher {
+        name = 'lenpix'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
