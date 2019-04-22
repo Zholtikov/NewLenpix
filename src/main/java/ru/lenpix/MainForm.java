@@ -3,26 +3,21 @@ package ru.lenpix;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.List;
 
 
-/**
- * Пример javafx-окошечка.
- */
 public class MainForm extends Application {
 
     public static void main(String[] args) {
@@ -31,6 +26,8 @@ public class MainForm extends Application {
 
     private Image leftImage, rightImage;
     private boolean showLeft = true;
+
+    @FXML
     private Stage primaryStage;
 
     @FXML
@@ -45,16 +42,16 @@ public class MainForm extends Application {
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new UncheckedIOException(e);
         }
     }
 
     @FXML
     private void handleSubmitButtonAction(ActionEvent event) {
-        List<File> files = new FileChooser().showOpenMultipleDialog(primaryStage);
-        if (files != null && files.size() == 2) {
-            leftImage = new Image(files.get(0).toURI().toString());
-            rightImage = new Image(files.get(1).toURI().toString());
+        List<File> selected = new FileChooser().showOpenMultipleDialog(primaryStage);
+        if (selected != null && selected.size() == 2) {
+            leftImage = new Image(selected.get(0).toURI().toString());
+            rightImage = new Image(selected.get(1).toURI().toString());
             repaintCanvas();
         }
     }
@@ -66,13 +63,6 @@ public class MainForm extends Application {
     }
 
     private void repaintCanvas() {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
-        if (leftImage  == null || rightImage == null) {
-            gc.setFill(Color.BLACK);
-            gc.fill();
-        }
-
         drawImageOnCanvas((showLeft ? leftImage : rightImage));
     }
 
