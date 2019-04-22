@@ -3,29 +3,34 @@ pipeline {
         docker { image 'openjdk:11-jdk' }
     }
     stages {
-        stage('Build') {
+        stage('Clean') {
             steps {
-                sh './gradlew --no-daemon --no-parallel --no-build-cache test'
+                sh './gradlew --no-daemon clean'
             }
         }
 
         stage('Test') {
             steps {
-                sh './gradlew --no-daemon --no-parallel --no-build-cache test'
+                sh './gradlew --no-daemon test'
+            }
+
+            post {
+                always {
+                    junit '**/build/test-results/test/*.xml'
+                }
             }
         }
 
-        stage('Create distZip') {
+        stage('Create package') {
             steps {
-                sh './gradlew --no-daemon --no-parallel --no-build-cache distZip'
-                archiveArtifacts artifacts: 'build/distributions/*.zip', fingerprint: true
+                sh './gradlew --no-daemon distZip jlinkZip'
             }
-        }
 
-        stage('Create jlinkZip') {
-            steps {
-                sh './gradlew --no-daemon --no-parallel --no-build-cache jlinkZip'
-                archiveArtifacts artifacts: 'build/image.zip'
+            post {
+                always {
+                    archiveArtifacts artifacts: 'build/distributions/*.zip', fingerprint: true
+                    archiveArtifacts artifacts: 'build/image.zip'
+                }
             }
         }
     }
