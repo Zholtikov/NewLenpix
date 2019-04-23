@@ -4,11 +4,14 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -33,6 +36,9 @@ public class MainForm extends Application {
     @FXML
     private Canvas canvas;
 
+    @FXML
+    private Label coordinatesInfo;
+
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -47,7 +53,7 @@ public class MainForm extends Application {
     }
 
     @FXML
-    private void openFilesButtonHander(ActionEvent event) {
+    private void openFilesButtonHandler(ActionEvent event) {
         List<File> selected = new FileChooser().showOpenMultipleDialog(primaryStage);
         if (selected != null && selected.size() == 2) {
             leftImage = new Image(selected.get(0).toURI().toString());
@@ -57,7 +63,7 @@ public class MainForm extends Application {
     }
 
     @FXML
-    public void changeImageOnCanvasButtonHander(ActionEvent event) {
+    public void changeImageOnCanvasButtonHandler(ActionEvent event) {
         showLeft = !showLeft;
         repaintCanvas();
     }
@@ -72,5 +78,22 @@ public class MainForm extends Application {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight());
+    }
+
+    public void handleSaveCoordinates(MouseEvent mouseEvent) {
+        double x = mouseEvent.getX();
+        double y = mouseEvent.getY();
+        Point2D point = new Point2D(x,y);
+        System.out.println(point);
+    }
+
+    public void handleCoordinatesInfo(MouseEvent mouseEvent) {
+        int x = (int)mouseEvent.getX();
+        int y = (int)mouseEvent.getY();
+        coordinatesInfo.setText(x+":"+y);
+    }
+
+    public void handleExitedCanvasCoordinates(MouseEvent mouseEvent) {
+        coordinatesInfo.setText("");
     }
 }
