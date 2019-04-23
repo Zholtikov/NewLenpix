@@ -21,7 +21,7 @@ dependencies {
 }
 
 application {
-    mainClassName = "ru.lenpix.MainForm"
+    mainClassName = "$moduleName/ru.lenpix.MainForm"
 }
 
 javafx {
