@@ -47,7 +47,7 @@ public class MainForm extends Application {
     }
 
     @FXML
-    private void handleSubmitButtonAction(ActionEvent event) {
+    private void openFilesButtonHander(ActionEvent event) {
         List<File> selected = new FileChooser().showOpenMultipleDialog(primaryStage);
         if (selected != null && selected.size() == 2) {
             leftImage = new Image(selected.get(0).toURI().toString());
@@ -57,7 +57,7 @@ public class MainForm extends Application {
     }
 
     @FXML
-    public void changeImageOnCanvas(ActionEvent event) {
+    public void changeImageOnCanvasButtonHander(ActionEvent event) {
         showLeft = !showLeft;
         repaintCanvas();
     }

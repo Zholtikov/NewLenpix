@@ -10,10 +10,10 @@
 <VBox prefHeight="435.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.lenpix.MainForm">
     <MenuBar fx:id="menu">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" onAction="#handleSubmitButtonAction" text="Load images" />
+            <MenuItem mnemonicParsing="false" onAction="#openFilesButtonHander" text="Load images" />
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
-            <MenuItem mnemonicParsing="false" onAction="#changeImageOnCanvas" text="Change image" />
+            <MenuItem mnemonicParsing="false" onAction="#changeImageOnCanvasButtonHander" text="Change image" />
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
             <MenuItem mnemonicParsing="false" text="About" />
