@@ -83,14 +83,13 @@ public class MainForm extends Application {
     public void handleSaveCoordinates(MouseEvent mouseEvent) {
         double x = mouseEvent.getX();
         double y = mouseEvent.getY();
-        Point2D point = new Point2D(x,y);
-        System.out.println(point);
+        Point2D point = new Point2D(x, y);
     }
 
     public void handleCoordinatesInfo(MouseEvent mouseEvent) {
-        int x = (int)mouseEvent.getX();
-        int y = (int)mouseEvent.getY();
-        coordinatesInfo.setText(x+":"+y);
+        int x = (int) mouseEvent.getX();
+        int y = (int) mouseEvent.getY();
+        coordinatesInfo.setText(x + ":" + y);
     }
 
     public void handleExitedCanvasCoordinates(MouseEvent mouseEvent) {
