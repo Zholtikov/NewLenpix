@@ -1,5 +1,6 @@
 package ru.lenpix;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -27,8 +31,9 @@ public class MainForm extends Application {
         launch(args);
     }
 
+    private int dx = 0, dy = 0;
     private Image leftImage, rightImage;
-    private boolean showLeft = true;
+    private boolean overlayWithRightImage = false;
 
     @FXML
     private Stage primaryStage;
@@ -52,6 +57,13 @@ public class MainForm extends Application {
         }
     }
 
+    /**
+     * Вызывается, когда все объекты формы сконструированы.
+     */
+    public void initialize() {
+
+    }
+
     @FXML
     private void openFilesButtonHandler(ActionEvent event) {
         List<File> selected = new FileChooser().showOpenMultipleDialog(primaryStage);
@@ -63,36 +75,63 @@ public class MainForm extends Application {
     }
 
     @FXML
-    public void changeImageOnCanvasButtonHandler(ActionEvent event) {
-        showLeft = !showLeft;
+    public void overlayWithRightImageButtonHandler(ActionEvent event) {
+        overlayWithRightImage = !overlayWithRightImage;
         repaintCanvas();
     }
 
     private void repaintCanvas() {
-        drawImageOnCanvas((showLeft ? leftImage : rightImage));
-    }
-
-    private void drawImageOnCanvas(Image image) {
-        canvas.setWidth(image.getWidth());
-        canvas.setHeight(image.getHeight());
+        canvas.setWidth(leftImage.getWidth());
+        canvas.setHeight(leftImage.getHeight());
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawImageOnCanvas(gc, leftImage, 0, 0);
+        if (overlayWithRightImage) drawImageOnCanvas(gc, rightImage, dx, dy);
     }
 
-    public void handleSaveCoordinates(MouseEvent mouseEvent) {
+    private void drawImageOnCanvas(GraphicsContext gc, Image image, int dx, int dy) {
+        gc.save();
+        gc.setGlobalBlendMode(BlendMode.OVERLAY);
+        gc.translate(dx, dy);
+        gc.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.restore();
+    }
+
+    public void canvasOnMouseClickedHandler(MouseEvent mouseEvent) {
         double x = mouseEvent.getX();
         double y = mouseEvent.getY();
         Point2D point = new Point2D(x, y);
+        // TODO: Запускаем какое-то событие при нажатии на canvas
     }
 
-    public void handleCoordinatesInfo(MouseEvent mouseEvent) {
+    public void canvasOnMouseMoved(MouseEvent mouseEvent) {
         int x = (int) mouseEvent.getX();
         int y = (int) mouseEvent.getY();
         coordinatesInfo.setText(x + ":" + y);
     }
 
-    public void handleExitedCanvasCoordinates(MouseEvent mouseEvent) {
+    public void canvasOnMouseExitedHandler(MouseEvent mouseEvent) {
         coordinatesInfo.setText("");
+    }
+
+    public void onKeyboardKeyPressedAction(KeyEvent keyEvent) {
+        if (!overlayWithRightImage)
+            return;
+
+        // Left
+        if (keyEvent.getCode() == KeyCode.A)
+            dx--;
+        // Right
+        if (keyEvent.getCode() == KeyCode.D)
+            dx++;
+        // Up
+        if (keyEvent.getCode() == KeyCode.W)
+            dy--;
+        // Down
+        if (keyEvent.getCode() == KeyCode.S)
+            dy++;
+
+        repaintCanvas();
     }
 }

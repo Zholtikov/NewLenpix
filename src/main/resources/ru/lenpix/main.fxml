@@ -8,20 +8,20 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="435.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.lenpix.MainForm">
+<VBox prefHeight="435.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.lenpix.MainForm">
     <MenuBar fx:id="menu">
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" onAction="#openFilesButtonHandler" text="Load images" />
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
-            <MenuItem mnemonicParsing="false" onAction="#changeImageOnCanvasButtonHandler" text="Change image" />
+            <MenuItem mnemonicParsing="false" onAction="#overlayWithRightImageButtonHandler" text="Overlay with right image" />
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
             <MenuItem mnemonicParsing="false" text="About" />
         </Menu>
     </MenuBar>
-    <ScrollPane hbarPolicy="ALWAYS" layoutY="29.0" prefWidth="280.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
-        <Canvas fx:id="canvas" onMouseClicked="#handleSaveCoordinates" onMouseExited="#handleExitedCanvasCoordinates" onMouseMoved="#handleCoordinatesInfo" />
+    <ScrollPane hbarPolicy="ALWAYS" layoutY="29.0" pannable="true" prefWidth="280.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS" onKeyPressed="#onKeyboardKeyPressedAction" >
+        <Canvas fx:id="canvas" onMouseClicked="#canvasOnMouseClickedHandler" onMouseExited="#canvasOnMouseExitedHandler" onMouseMoved="#canvasOnMouseMoved" />
     </ScrollPane>
-   <Label fx:id="coordinatesInfo" />
+   <Label fx:id="coordinatesInfo"/>
 </VBox>
