@@ -3,6 +3,7 @@ package ru.lenpix;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -10,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
@@ -31,6 +33,7 @@ public class MainForm extends Application {
         launch(args);
     }
 
+
     private int dx = 0, dy = 0;
     private Image leftImage, rightImage;
     private boolean overlayWithRightImage = false;
@@ -43,6 +46,9 @@ public class MainForm extends Application {
 
     @FXML
     private Label coordinatesInfo;
+
+    @FXML
+    public CheckBox overlayWithRightImageCheckbox;
 
     @Override
     public void start(Stage primaryStage) {
@@ -61,21 +67,31 @@ public class MainForm extends Application {
      * Вызывается, когда все объекты формы сконструированы.
      */
     public void initialize() {
-
+        updateControllersThatRequireImages();
     }
 
     @FXML
     private void openFilesButtonHandler(ActionEvent event) {
         List<File> selected = new FileChooser().showOpenMultipleDialog(primaryStage);
         if (selected != null && selected.size() == 2) {
-            leftImage = new Image(selected.get(0).toURI().toString());
-            rightImage = new Image(selected.get(1).toURI().toString());
+            Image leftImage = new Image(selected.get(0).toURI().toString());
+            Image rightImage = new Image(selected.get(1).toURI().toString());
+
+            /*// Для работы корректной работы нам нужны только изображения одного размера
+            if (leftImage.getWidth() == rightImage.getWidth() && leftImage.getHeight() == rightImage.getHeight()) {
+                return;
+            }*/
+
+            this.leftImage = leftImage;
+            this.rightImage = rightImage;
             repaintCanvas();
+
+            updateControllersThatRequireImages();
         }
     }
 
     @FXML
-    public void overlayWithRightImageButtonHandler(ActionEvent event) {
+    public void overlayWithRightImageCheckboxHandler(ActionEvent event) {
         overlayWithRightImage = !overlayWithRightImage;
         repaintCanvas();
     }
@@ -105,7 +121,7 @@ public class MainForm extends Application {
         // TODO: Запускаем какое-то событие при нажатии на canvas
     }
 
-    public void canvasOnMouseMoved(MouseEvent mouseEvent) {
+    public void canvasOnMouseMovedHandler(MouseEvent mouseEvent) {
         int x = (int) mouseEvent.getX();
         int y = (int) mouseEvent.getY();
         coordinatesInfo.setText(x + ":" + y);
@@ -133,5 +149,13 @@ public class MainForm extends Application {
             dy++;
 
         repaintCanvas();
+    }
+
+    private void updateControllersThatRequireImages() {
+        overlayWithRightImageCheckbox.setDisable(!isImagesLoaded());
+    }
+
+    private boolean isImagesLoaded() {
+        return leftImage != null && rightImage != null;
     }
 }
