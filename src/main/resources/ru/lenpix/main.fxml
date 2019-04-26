@@ -5,12 +5,14 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="435.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.lenpix.MainForm">
     <ToolBar prefHeight="40.0" prefWidth="200.0">
         <Button mnemonicParsing="false" onAction="#openFilesButtonHandler" text="Загрузить изображения" />
+      <Separator orientation="VERTICAL" />
         <CheckBox fx:id="overlayWithRightImageCheckbox" mnemonicParsing="false" onAction="#overlayWithRightImageCheckboxHandler" text="Наложить правое изображение" />
     </ToolBar>
     <ScrollPane hbarPolicy="ALWAYS" layoutY="29.0" onKeyPressed="#onKeyboardKeyPressedAction" pannable="true" prefWidth="280.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
