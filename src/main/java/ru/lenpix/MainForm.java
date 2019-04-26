@@ -1,9 +1,7 @@
 package ru.lenpix;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -46,7 +44,7 @@ public class MainForm extends Application {
     private Canvas canvas;
 
     @FXML
-    private Label coordinatesInfo;
+    private Label coordinatesInfoLabel;
 
     @FXML
     public CheckBox overlayWithRightImageCheckbox;
@@ -103,6 +101,8 @@ public class MainForm extends Application {
     }
 
     private void repaintCanvas() {
+        canvas.requestFocus();
+
         canvas.setWidth(leftImage.getWidth());
         canvas.setHeight(leftImage.getHeight());
 
@@ -130,11 +130,11 @@ public class MainForm extends Application {
     public void canvasOnMouseMovedHandler(MouseEvent mouseEvent) {
         int x = (int) mouseEvent.getX();
         int y = (int) mouseEvent.getY();
-        coordinatesInfo.setText(x + ":" + y);
+        coordinatesInfoLabel.setText(x + ":" + y);
     }
 
     public void canvasOnMouseExitedHandler(MouseEvent mouseEvent) {
-        coordinatesInfo.setText("");
+        coordinatesInfoLabel.setText("");
     }
 
     public void onKeyboardKeyPressedAction(KeyEvent keyEvent) {

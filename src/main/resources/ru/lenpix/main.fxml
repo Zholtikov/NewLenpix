@@ -24,7 +24,7 @@
          <Label fx:id="displacementStatusLabel" BorderPane.alignment="CENTER" />
       </left>
       <right>
-         <Label fx:id="coordinatesInfo" BorderPane.alignment="CENTER" />
+         <Label fx:id="coordinatesInfoLabel" BorderPane.alignment="CENTER" />
       </right>
    </BorderPane>
 </VBox>
