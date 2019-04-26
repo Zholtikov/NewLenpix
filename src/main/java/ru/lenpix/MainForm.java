@@ -34,6 +34,7 @@ public class MainForm extends Application {
     }
 
 
+
     private int dx = 0, dy = 0;
     private Image leftImage, rightImage;
     private boolean overlayWithRightImage = false;
@@ -49,6 +50,9 @@ public class MainForm extends Application {
 
     @FXML
     public CheckBox overlayWithRightImageCheckbox;
+
+    @FXML
+    private Label displacementStatusLabel;
 
     @Override
     public void start(Stage primaryStage) {
@@ -94,6 +98,8 @@ public class MainForm extends Application {
     public void overlayWithRightImageCheckboxHandler(ActionEvent event) {
         overlayWithRightImage = !overlayWithRightImage;
         repaintCanvas();
+
+        updateDisplacementStatus();
     }
 
     private void repaintCanvas() {
@@ -149,6 +155,8 @@ public class MainForm extends Application {
             dy++;
 
         repaintCanvas();
+
+        updateDisplacementStatus();
     }
 
     private void updateControllersThatRequireImages() {
@@ -157,5 +165,14 @@ public class MainForm extends Application {
 
     private boolean isImagesLoaded() {
         return leftImage != null && rightImage != null;
+    }
+
+    private void updateDisplacementStatus() {
+        if (overlayWithRightImage) {
+            displacementStatusLabel.setText(dx + ":" + dy);
+        } else {
+            displacementStatusLabel.setText("");
+        }
+
     }
 }
