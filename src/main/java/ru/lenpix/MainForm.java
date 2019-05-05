@@ -11,11 +11,13 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ru.lenpix.algo.DoubleMatrix;
@@ -34,10 +36,10 @@ public class MainForm extends Application {
     }
 
 
-
     private int dx = 0, dy = 0;
     private Image leftImage, rightImage;
     private boolean overlayWithRightImage = false;
+    private ModeType mode = ModeType.NONE;
 
     @FXML
     private Stage primaryStage;
@@ -54,11 +56,19 @@ public class MainForm extends Application {
     @FXML
     private Label displacementStatusLabel;
 
+    @FXML
+    private TextField focusField; // фокус
+
+    @FXML
+    private TextField baseField; // дистанция между камерами в cантиметрах
+
+    @FXML
+    private TextField photoWidthField; // линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
+
     @Override
     public void start(Stage primaryStage) {
         try {
             Parent parent = FXMLLoader.load(getClass().getResource("main.fxml"));
-
             Scene scene = new Scene(parent);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -123,19 +133,40 @@ public class MainForm extends Application {
     }
 
     public void canvasOnMouseClickedHandler(MouseEvent mouseEvent) {
-        System.out.println("start");
-
         double xO = mouseEvent.getX();
         double yO = mouseEvent.getY();
 
+        // дистанция между камерами в cантиметрах
+        double l = Double.parseDouble(baseField.getText());
+        // фокус
+        double f = Double.parseDouble(focusField.getText());
+        // линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
+        double width = Double.parseDouble(photoWidthField.getText());
+        // ширина пикселя
+        double pixelWSize = width / (int) rightImage.getWidth();
+
+        if (mode == ModeType.DISTANCE) {
+            calcDisplacement(xO, yO);
+
+            double deltaX = Math.abs(dx) * pixelWSize/1000;
+            double distance = (l/1000 * f/1000 / deltaX);
+            drawDistance((int) xO, (int) yO, distance);
+            mode = ModeType.NONE;
+        }
+
+        updateDisplacementStatus();
+        repaintCanvas();
+    }
+
+    private void calcDisplacement(double userX, double userY) {
         int squareSize = 20;
 
         // Вычисляем левый угол квадрата, в который ткнул юзер
-        int x = (int) (xO - squareSize / 2);
-        int y = (int) (yO - squareSize / 2);
+        int x = (int) (userX - squareSize / 2);
+        int y = (int) (userY - squareSize / 2);
 
         if (x < 0 || y < 0 || x + squareSize >= leftImage.getWidth() || y + squareSize >= leftImage.getHeight())
-            return;
+            return ;
 
         DoubleMatrix doubleMatrix = new ImageOffsetNCCMatrixBuilder()
                 .setLeftImage(leftImage)
@@ -154,15 +185,8 @@ public class MainForm extends Application {
             }
         }
 
-        System.out.println(mI + " " + mJ);
-
         dx = -mI;
         dy = -mJ;
-
-        updateDisplacementStatus();
-        repaintCanvas();
-
-        System.out.println("finish");
     }
 
     public void canvasOnMouseMovedHandler(MouseEvent mouseEvent) {
@@ -212,5 +236,21 @@ public class MainForm extends Application {
             displacementStatusLabel.setText("");
         }
 
+    }
+
+    private void drawDistance(int x, int y, double distanse) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.web("#4bf221"));
+        gc.fillText(Double.toString(distanse), x - 10, y - 20);
+        gc.fillOval(x-3, y-3, 6.0, 6.0);
+    }
+
+    public void distanceModeButtonHandler(ActionEvent actionEvent) {
+        mode = ModeType.DISTANCE;
+    }
+
+    private enum ModeType{
+        NONE,
+        DISTANCE
     }
 }
