@@ -55,7 +55,7 @@ public class NormalizedCrossCorrelation {
         double secondIsum = 0.0;
         for (int i = x; i < x + n; i++) {
             for (int j = y; j < y + n; j++) {
-                secondIsum += mat2.get(i + dx, j + dx);
+                secondIsum += mat2.get(i + dx, j + dy);
             }
         }
 
