@@ -43,8 +43,11 @@ public class ImageOffsetNCCMatrixBuilder {
                 squareSize,
                 x, y);
 
-        int dxMax = squareSize * 2;
-        int dyMax = squareSize * 2;
+        int minWidth = Math.min(leftImageBrightness.getWidth(), rightImageBrightness.getWidth());
+        int minHeight = Math.min(leftImageBrightness.getHeight(), rightImageBrightness.getHeight());
+
+        int dxMax = minWidth - x - squareSize + 1;
+        int dyMax = minHeight - y - squareSize + 1;
         DoubleMatrix nccMatrix = DoubleMatrix.createNew(dxMax, dyMax);
 
         for (int dx = 0; dx < nccMatrix.getWidth(); dx++) {

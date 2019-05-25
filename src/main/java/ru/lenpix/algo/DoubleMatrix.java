@@ -31,11 +31,11 @@ public class DoubleMatrix {
     }
 
     public int getHeight() {
-        return val.length;
+        return val[0].length;
     }
 
     public int getWidth() {
-        return val[0].length;
+        return val.length;
     }
 
     @Override

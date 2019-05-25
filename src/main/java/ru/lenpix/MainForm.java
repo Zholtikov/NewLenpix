@@ -134,6 +134,9 @@ public class MainForm extends Application {
         int x = (int) (xO - squareSize / 2);
         int y = (int) (yO - squareSize / 2);
 
+        if (x < 0 || y < 0 || x + squareSize >= leftImage.getWidth() || y + squareSize >= leftImage.getHeight())
+            return;
+
         DoubleMatrix doubleMatrix = new ImageOffsetNCCMatrixBuilder()
                 .setLeftImage(leftImage)
                 .setRightImage(rightImage)
