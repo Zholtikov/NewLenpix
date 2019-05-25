@@ -2,8 +2,10 @@ package ru.lenpix.algo;
 
 public class ImageOffsetNCCMatrix {
     private int maxDX, maxDY;
+    private DoubleMatrix nccMatrix;
 
     public ImageOffsetNCCMatrix(DoubleMatrix nccMatrix){
+        this.nccMatrix = nccMatrix;
         findMaxOffset(nccMatrix);
     }
 
@@ -19,6 +21,10 @@ public class ImageOffsetNCCMatrix {
         }
         maxDX = mI;
         maxDY = mJ;
+    }
+
+    public double get(int i, int j){
+        return nccMatrix.get(i, j);
     }
 
     public int getMaxDX(){
