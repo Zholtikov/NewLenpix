@@ -30,7 +30,7 @@ public class ImageOffsetNCCMatrixBuilder {
         return this;
     }
 
-    public DoubleMatrix create() {
+    public ImageOffsetNCCMatrix create() {
         DoubleMatrix leftImageBrightness = brightnessMatrix(this.left);
         DoubleMatrix rightImageBrightness = brightnessMatrix(this.right);
 
@@ -58,7 +58,7 @@ public class ImageOffsetNCCMatrixBuilder {
             System.out.println(dx * nccMatrix.getWidth() + "/" + nccMatrix.getWidth() * nccMatrix.getHeight());
         }
 
-        return nccMatrix;
+        return new ImageOffsetNCCMatrix(nccMatrix);
     }
 
     private DoubleMatrix brightnessMatrix(Image image) {
