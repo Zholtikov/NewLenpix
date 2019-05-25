@@ -128,7 +128,7 @@ public class MainForm extends Application {
         double xO = mouseEvent.getX();
         double yO = mouseEvent.getY();
 
-        int squareSize = 100;
+        int squareSize = 20;
 
         // Вычисляем левый угол квадрата, в который ткнул юзер
         int x = (int) (xO - squareSize / 2);
@@ -153,9 +153,8 @@ public class MainForm extends Application {
 
         System.out.println(mI + " " + mJ);
 
-        dx = -(mI - doubleMatrix.getWidth() / 2);
-        dy = -(mJ - doubleMatrix.getHeight() / 2);
-        System.out.println(dx + " " + dy);
+        dx = -mI;
+        dy = -mJ;
 
         updateDisplacementStatus();
         repaintCanvas();

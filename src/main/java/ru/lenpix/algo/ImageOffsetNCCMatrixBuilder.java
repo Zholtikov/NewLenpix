@@ -49,12 +49,16 @@ public class ImageOffsetNCCMatrixBuilder {
 
         int dxMax = squareSize * 2;
         int dyMax = squareSize * 2;
-        DoubleMatrix nccMatrix = DoubleMatrix.createNew(dxMax * 2, dyMax * 2);
+        DoubleMatrix nccMatrix = DoubleMatrix.createNew(dxMax, dyMax);
 
+        int progress = 0;
         for (int dx = 0; dx < nccMatrix.getHeight(); dx++) {
             for (int dy = 0; dy < nccMatrix.getWidth(); dy++) {
-                nccMatrix.set(dx, dy, ncc.apply(dx - nccMatrix.getHeight() / 2, dy - nccMatrix.getWidth() / 2));
+                nccMatrix.set(dx, dy, ncc.apply(dx, dy));
+                progress += 1;
             }
+
+            System.out.println(dx * nccMatrix.getWidth() + "/" + nccMatrix.getWidth() * nccMatrix.getHeight());
         }
 
         return nccMatrix;
