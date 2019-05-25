@@ -31,10 +31,6 @@ public class ImageOffsetNCCMatrixBuilder {
     }
 
     public DoubleMatrix create() {
-//        if (left.getWidth() != right.getWidth() || left.getHeight() != right.getHeight()) {
-//            throw new IllegalStateException("left and right images have different dimensions");
-//        }
-
         DoubleMatrix leftImageBrightness = brightnessMatrix(this.left);
         DoubleMatrix rightImageBrightness = brightnessMatrix(this.right);
 
@@ -51,11 +47,9 @@ public class ImageOffsetNCCMatrixBuilder {
         int dyMax = squareSize * 2;
         DoubleMatrix nccMatrix = DoubleMatrix.createNew(dxMax, dyMax);
 
-        int progress = 0;
-        for (int dx = 0; dx < nccMatrix.getHeight(); dx++) {
-            for (int dy = 0; dy < nccMatrix.getWidth(); dy++) {
+        for (int dx = 0; dx < nccMatrix.getWidth(); dx++) {
+            for (int dy = 0; dy < nccMatrix.getHeight(); dy++) {
                 nccMatrix.set(dx, dy, ncc.apply(dx, dy));
-                progress += 1;
             }
 
             System.out.println(dx * nccMatrix.getWidth() + "/" + nccMatrix.getWidth() * nccMatrix.getHeight());
