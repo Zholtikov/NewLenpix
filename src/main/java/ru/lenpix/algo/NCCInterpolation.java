@@ -1,13 +1,13 @@
 package ru.lenpix.algo;
 
-public class NССInterpolation {
+public class NCCInterpolation {
     private final ImageOffsetNCCMatrix matrix;
 
     private DoubleMatrix interMatrix;
     private int maxNodeDX, maxNodeDY;
     private double maxInter = -2;
 
-    public NССInterpolation(ImageOffsetNCCMatrix matrix) {
+    public NCCInterpolation(ImageOffsetNCCMatrix matrix) {
         this.matrix = matrix;
         calcInterMarix();
     }

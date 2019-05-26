@@ -21,7 +21,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ru.lenpix.algo.ImageOffsetNCCMatrix;
 import ru.lenpix.algo.ImageOffsetNCCMatrixBuilder;
-import ru.lenpix.algo.NССInterpolation;
+import ru.lenpix.algo.NCCInterpolation;
 
 import java.io.File;
 import java.io.IOException;
@@ -183,7 +183,7 @@ public class MainForm extends Application {
         dx = -matrix.getMaxDX();
         dy = -matrix.getMaxDY();
 
-        NССInterpolation interpolation = new NССInterpolation(matrix);
+        NCCInterpolation interpolation = new NCCInterpolation(matrix);
         dx += interpolation.getInterDX();
         dy += interpolation.getInterDY();
     }
