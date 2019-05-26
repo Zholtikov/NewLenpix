@@ -1,13 +1,13 @@
 package ru.lenpix.algo;
 
-public class NccInterpolation {
+public class NССInterpolation {
     private final ImageOffsetNCCMatrix matrix;
 
     private DoubleMatrix interMatrix;
     private int maxNodeDX, maxNodeDY;
     private double maxInter = -2;
 
-    public NccInterpolation(ImageOffsetNCCMatrix matrix) {
+    public NССInterpolation(ImageOffsetNCCMatrix matrix) {
         this.matrix = matrix;
         calcInterMarix();
     }
@@ -16,8 +16,11 @@ public class NccInterpolation {
     public double getInterDX() {
         int xPlus = maxNodeDX + 1;
         int xMinus = maxNodeDX - 1;
-        double maxPlus = interMatrix.get(maxNodeDX + 1, maxNodeDY);
-        double maxMinus = interMatrix.get(maxNodeDX - 1, maxNodeDY);
+        if (maxNodeDX == 0) {
+            return 0;
+        }
+        double maxPlus = interMatrix.get(xPlus, maxNodeDY);
+        double maxMinus = interMatrix.get(xMinus, maxNodeDY);
         double num = (Math.pow(xPlus,2) - Math.pow(maxNodeDX, 2)) * (maxInter - maxMinus) +
                 (Math.pow(maxNodeDX,2) - Math.pow(xMinus, 2)) * (maxInter - maxPlus);
 
@@ -30,8 +33,11 @@ public class NccInterpolation {
     public double getInterDY() {
         int yPlus = maxNodeDY + 1;
         int yMinus = maxNodeDY - 1;
-        double maxPlus = interMatrix.get(maxNodeDY + 1, maxNodeDY);
-        double maxMinus = interMatrix.get(maxNodeDY - 1, maxNodeDY);
+        if (maxNodeDY == 0) {
+            return 0;
+        }
+        double maxPlus = interMatrix.get(yPlus, maxNodeDY);
+        double maxMinus = interMatrix.get(yMinus, maxNodeDY);
         double num = (Math.pow(yPlus,2) - Math.pow(maxNodeDY, 2)) * (maxInter - maxMinus) +
                 (Math.pow(maxNodeDY,2) - Math.pow(yMinus, 2)) * (maxInter - maxPlus);
 
@@ -69,5 +75,13 @@ public class NccInterpolation {
                 }
             }
         }
+    }
+
+    public int getMaxNodeDX(){
+        return maxNodeDX;
+    }
+
+    public int getMaxNodeDY(){
+        return maxNodeDY;
     }
 }

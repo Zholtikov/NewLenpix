@@ -17,13 +17,11 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import ru.lenpix.algo.DoubleMatrix;
 import ru.lenpix.algo.ImageOffsetNCCMatrix;
 import ru.lenpix.algo.ImageOffsetNCCMatrixBuilder;
-import ru.lenpix.algo.NccInterpolation;
+import ru.lenpix.algo.NССInterpolation;
 
 import java.io.File;
 import java.io.IOException;
@@ -182,14 +180,12 @@ public class MainForm extends Application {
                 .setUpperLeftCornerPoint(new Point2D(x, y))
                 .create();
 
-//        NccInterpolation test = new NccInterpolation(matrix);
-//        System.out.println(test.getInterDX());
-//        System.out.println(test.getInterDY());
-
-        System.out.println(matrix.getMaxDX() + " " + matrix.getMaxDY());
-
         dx = -matrix.getMaxDX();
         dy = -matrix.getMaxDY();
+
+        NССInterpolation interpolation = new NССInterpolation(matrix);
+        dx += interpolation.getInterDX();
+        dy += interpolation.getInterDY();
     }
 
     public void canvasOnMouseMovedHandler(MouseEvent mouseEvent) {
