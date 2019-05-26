@@ -18,6 +18,6 @@ public class DistanceItem implements IPaintable{
     public void paint(GraphicsContext gc) {
         gc.setFill(Color.web("#4bf221"));
         gc.fillText(Double.toString(distance), x - 10, y - 20);
-        gc.fillOval(x-3, y-3, 6.0, 6.0);
+        gc.fillOval(x-4, y-4, 8.0, 8.0);
     }
 }

@@ -100,6 +100,7 @@ public class MainForm extends Application {
 
             this.leftImage = leftImage;
             this.rightImage = rightImage;
+            items.clear();
             repaintCanvas();
 
             updateControllersThatRequireImages();
