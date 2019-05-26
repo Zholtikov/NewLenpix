@@ -26,6 +26,7 @@ import ru.lenpix.algo.ImageOffsetNCCMatrixBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,6 +41,7 @@ public class MainForm extends Application {
     private Image leftImage, rightImage;
     private boolean overlayWithRightImage = false;
     private ModeType mode = ModeType.NONE;
+    private List<IPaintable> items = new ArrayList<>();
 
     @FXML
     private Stage primaryStage;
@@ -122,6 +124,9 @@ public class MainForm extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         drawImageOnCanvas(gc, leftImage, 0, 0);
         if (overlayWithRightImage) drawImageOnCanvas(gc, rightImage, dx, dy);
+        for (IPaintable item : items) {
+            item.paint(gc);
+        }
     }
 
     private void drawImageOnCanvas(GraphicsContext gc, Image image, int dx, int dy) {
@@ -148,9 +153,9 @@ public class MainForm extends Application {
         if (mode == ModeType.DISTANCE) {
             calcDisplacement(xO, yO);
 
-            double deltaX = Math.abs(dx) * pixelWSize/1000;
-            double distance = (l/1000 * f/1000 / deltaX);
-            drawDistance((int) xO, (int) yO, distance);
+            double deltaX = Math.abs(dx) * pixelWSize / 1000;
+            double distance = (l / 1000 * f / 1000 / deltaX);
+            addItem(new DistanceItem((int) xO, (int) yO, distance));
             mode = ModeType.NONE;
         }
 
@@ -166,7 +171,7 @@ public class MainForm extends Application {
         int y = (int) (userY - squareSize / 2);
 
         if (x < 0 || y < 0 || x + squareSize >= leftImage.getWidth() || y + squareSize >= leftImage.getHeight())
-            return ;
+            return;
 
         DoubleMatrix doubleMatrix = new ImageOffsetNCCMatrixBuilder()
                 .setLeftImage(leftImage)
@@ -238,18 +243,17 @@ public class MainForm extends Application {
 
     }
 
-    private void drawDistance(int x, int y, double distanse) {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.web("#4bf221"));
-        gc.fillText(Double.toString(distanse), x - 10, y - 20);
-        gc.fillOval(x-3, y-3, 6.0, 6.0);
+    private void addItem(IPaintable item) {
+        items.add(item);
+        repaintCanvas();
     }
+
 
     public void distanceModeButtonHandler(ActionEvent actionEvent) {
         mode = ModeType.DISTANCE;
     }
 
-    private enum ModeType{
+    private enum ModeType {
         NONE,
         DISTANCE
     }
