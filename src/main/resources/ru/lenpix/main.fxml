@@ -6,19 +6,34 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="435.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.lenpix.MainForm">
+<VBox prefHeight="435.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.lenpix.MainForm">
     <ToolBar prefHeight="40.0" prefWidth="200.0">
         <Button mnemonicParsing="false" onAction="#openFilesButtonHandler" text="Загрузить изображения" />
       <Separator orientation="VERTICAL" />
         <CheckBox fx:id="overlayWithRightImageCheckbox" mnemonicParsing="false" onAction="#overlayWithRightImageCheckboxHandler" text="Наложить правое изображение" />
+      <Separator orientation="VERTICAL" />
+      <Button onAction="#distanceModeButtonHandler" mnemonicParsing="false" text="Дальность" />
     </ToolBar>
     <ScrollPane hbarPolicy="ALWAYS" layoutY="29.0" onKeyPressed="#onKeyboardKeyPressedAction" pannable="true" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
         <Canvas fx:id="canvas" onMouseClicked="#canvasOnMouseClickedHandler" onMouseExited="#canvasOnMouseExitedHandler" onMouseMoved="#canvasOnMouseMovedHandler" />
     </ScrollPane>
+   <ToolBar prefHeight="40.0" prefWidth="200.0">
+     <items>
+           <TextField fx:id="focusField" promptText="Фокус (мм)" text="3" />
+           <Label text="Фокус (мм)" />
+         <Separator orientation="VERTICAL" />
+           <TextField fx:id="baseField" promptText="База (мм)" text="50" />
+           <Label text="База (мм)" />
+         <Separator orientation="VERTICAL" />
+         <TextField fx:id="photoWidthField" promptText="Ширина (мм)" text="40" />
+         <Label text="Ширина (мм)" />
+     </items>
+   </ToolBar>
    <BorderPane>
       <left>
          <Label fx:id="displacementStatusLabel" BorderPane.alignment="CENTER" />
