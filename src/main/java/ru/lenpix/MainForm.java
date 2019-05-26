@@ -18,6 +18,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import ru.lenpix.algo.DoubleMatrix;
+import ru.lenpix.algo.ImageOffsetNCCMatrixBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -121,10 +123,46 @@ public class MainForm extends Application {
     }
 
     public void canvasOnMouseClickedHandler(MouseEvent mouseEvent) {
-        double x = mouseEvent.getX();
-        double y = mouseEvent.getY();
-        Point2D point = new Point2D(x, y);
-        // TODO: Запускаем какое-то событие при нажатии на canvas
+        System.out.println("start");
+
+        double xO = mouseEvent.getX();
+        double yO = mouseEvent.getY();
+
+        int squareSize = 20;
+
+        // Вычисляем левый угол квадрата, в который ткнул юзер
+        int x = (int) (xO - squareSize / 2);
+        int y = (int) (yO - squareSize / 2);
+
+        if (x < 0 || y < 0 || x + squareSize >= leftImage.getWidth() || y + squareSize >= leftImage.getHeight())
+            return;
+
+        DoubleMatrix doubleMatrix = new ImageOffsetNCCMatrixBuilder()
+                .setLeftImage(leftImage)
+                .setRightImage(rightImage)
+                .setSquareSize(squareSize)
+                .setUpperLeftCornerPoint(new Point2D(x, y))
+                .create();
+
+        int mI = 0, mJ = 0;
+        for (int i = 0; i < doubleMatrix.getWidth(); i++) {
+            for (int j = 0; j < doubleMatrix.getHeight(); j++) {
+                if (doubleMatrix.get(mI, mJ) < doubleMatrix.get(i, j)) {
+                    mI = i;
+                    mJ = j;
+                }
+            }
+        }
+
+        System.out.println(mI + " " + mJ);
+
+        dx = -mI;
+        dy = -mJ;
+
+        updateDisplacementStatus();
+        repaintCanvas();
+
+        System.out.println("finish");
     }
 
     public void canvasOnMouseMovedHandler(MouseEvent mouseEvent) {
