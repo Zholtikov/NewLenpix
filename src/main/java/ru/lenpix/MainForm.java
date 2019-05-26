@@ -17,11 +17,11 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import ru.lenpix.algo.DoubleMatrix;
+import ru.lenpix.algo.ImageOffsetNCCMatrix;
 import ru.lenpix.algo.ImageOffsetNCCMatrixBuilder;
+import ru.lenpix.algo.NCCInterpolation;
 
 import java.io.File;
 import java.io.IOException;
@@ -174,25 +174,19 @@ public class MainForm extends Application {
         if (x < 0 || y < 0 || x + squareSize >= leftImage.getWidth() || y + squareSize >= leftImage.getHeight())
             return;
 
-        DoubleMatrix doubleMatrix = new ImageOffsetNCCMatrixBuilder()
+        ImageOffsetNCCMatrix matrix = new ImageOffsetNCCMatrixBuilder()
                 .setLeftImage(leftImage)
                 .setRightImage(rightImage)
                 .setSquareSize(squareSize)
                 .setUpperLeftCornerPoint(new Point2D(x, y))
                 .create();
 
-        int mI = 0, mJ = 0;
-        for (int i = 0; i < doubleMatrix.getWidth(); i++) {
-            for (int j = 0; j < doubleMatrix.getHeight(); j++) {
-                if (doubleMatrix.get(mI, mJ) < doubleMatrix.get(i, j)) {
-                    mI = i;
-                    mJ = j;
-                }
-            }
-        }
+        dx = -matrix.getMaxDX();
+        dy = -matrix.getMaxDY();
 
-        dx = -mI;
-        dy = -mJ;
+        NCCInterpolation interpolation = new NCCInterpolation(matrix);
+        dx += interpolation.getInterDX();
+        dy += interpolation.getInterDY();
     }
 
     public void canvasOnMouseMovedHandler(MouseEvent mouseEvent) {
