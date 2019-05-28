@@ -176,7 +176,7 @@ public class MainForm extends Application {
             mode = ModeType.NONE;
         }
 
-        if (mode == ModeType.OBJECTSDISTANCEPARTTWO) {
+        if (mode == ModeType.OBJECTS_DISTANCE_PART_TWO) {
             calcDisplacement(xO, yO);
             double deltaX = Math.abs(dx) * pixelWSize / 1000;
             double distance2Point = (l / 1000 * f / 1000 / deltaX);
@@ -194,13 +194,13 @@ public class MainForm extends Application {
             mode = ModeType.NONE;
         }
 
-        if (mode == ModeType.OBJECTSDISTANCEPARTONE) {
+        if (mode == ModeType.OBJECTS_DISTANCE_PART_ONE) {
             calcDisplacement(xO, yO);
             xPoint1Helper = xO;
             yPoint1Helper = yO;
             double deltaX = Math.abs(dx) * pixelWSize / 1000;
             distancePoint1Helper = (l / 1000 * f / 1000 / deltaX);
-            mode = ModeType.OBJECTSDISTANCEPARTTWO;
+            mode = ModeType.OBJECTS_DISTANCE_PART_TWO;
         }
 
         updateDisplacementStatus();
@@ -292,13 +292,13 @@ public class MainForm extends Application {
     }
 
     public void distanceBetweenObjectsModeButtonHandler(ActionEvent actionEvent) {
-        mode = ModeType.OBJECTSDISTANCEPARTONE;
+        mode = ModeType.OBJECTS_DISTANCE_PART_ONE;
     }
 
     private enum ModeType {
         NONE,
         DISTANCE,
-        OBJECTSDISTANCEPARTONE,
-        OBJECTSDISTANCEPARTTWO
+        OBJECTS_DISTANCE_PART_ONE,
+        OBJECTS_DISTANCE_PART_TWO
     }
 }
