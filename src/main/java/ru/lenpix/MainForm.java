@@ -178,7 +178,7 @@ public class MainForm extends Application {
         //ширина пикселя
         double pixelWSize = width / (int) rightImage.getWidth();
 
-         //высота пикселя
+        //высота пикселя
         double pixelHSize = height / (int) rightImage.getHeight();
 
         //главная точка (центр)
@@ -221,6 +221,24 @@ public class MainForm extends Application {
             double deltaX = Math.abs(dx) * pixelWSize / 1000;
             distancePoint1Helper = (l / 1000 * f / 1000 / deltaX);
             mode = ModeType.OBJECTS_DISTANCE_PART_TWO;
+        }
+
+        if (mode == ModeType.OBJECT_SIZE_PART_TWO) {
+            calcDisplacement(Math.abs(xO - xPoint1Helper), Math.abs(yO - yPoint1Helper));
+            double deltaX = Math.abs(dx) * pixelWSize / 1000;
+            double distance = ((l / 1000) * (f / 1000) / deltaX);
+            double realWidth = distance * (Math.abs(xO - xPoint1Helper)) * pixelWSize / f;
+            double realHeight = distance * (Math.abs(yO - yPoint1Helper)) * pixelHSize / f;
+            addItem(new ObjectSizeItem(
+                    (int) xPoint1Helper, (int) yPoint1Helper,
+                    (int) xO, (int) yO, distance, realWidth, realHeight));
+            mode = ModeType.NONE;
+        }
+
+        if (mode == ModeType.OBJECT_SIZE_PART_ONE) {
+            xPoint1Helper = xO;
+            yPoint1Helper = yO;
+            mode = ModeType.OBJECT_SIZE_PART_TWO;
         }
 
         updateDisplacementStatus();
@@ -315,10 +333,16 @@ public class MainForm extends Application {
         mode = ModeType.OBJECTS_DISTANCE_PART_ONE;
     }
 
+    public void realSizeObjectModeButtonHandler(ActionEvent actionEvent) {
+        mode = ModeType.OBJECT_SIZE_PART_ONE;
+    }
+
     private enum ModeType {
         NONE,
         DISTANCE,
         OBJECTS_DISTANCE_PART_ONE,
-        OBJECTS_DISTANCE_PART_TWO
+        OBJECTS_DISTANCE_PART_TWO,
+        OBJECT_SIZE_PART_ONE,
+        OBJECT_SIZE_PART_TWO
     }
 }

@@ -26,11 +26,11 @@ public class DistanceBetweenObjectsItem implements IPaintable {
     @Override
     public void paint(GraphicsContext gc) {
         gc.setFill(Color.web("#4bf221"));
-        gc.fillText(Double.toString(distanceTo1Point), x1 - 10, y1 - 20);
+        gc.fillText(Double.toString(distanceTo1Point), x1 + 15, y1 + 5 );
         gc.fillOval(x1 - 4, y1 - 4, 8.0, 8.0);
 
         gc.setFill(Color.web("#4bf221"));
-        gc.fillText(Double.toString(distanceTo2Point), x2 - 10, y2 - 20);
+        gc.fillText(Double.toString(distanceTo2Point), x2 + 15, y2 + 5);
         gc.fillOval(x2 - 4, y2 - 4, 8.0, 8.0);
 
         gc.setStroke(Color.RED);
