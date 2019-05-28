@@ -16,7 +16,7 @@ public class DistanceItem implements IPaintable{
 
     @Override
     public void paint(GraphicsContext gc) {
-        gc.setFill(Color.web("#4bf221"));
+        gc.setFill(Color.RED);
         gc.fillText(Double.toString(distance), x - 10, y - 20);
         gc.fillOval(x-4, y-4, 8.0, 8.0);
     }

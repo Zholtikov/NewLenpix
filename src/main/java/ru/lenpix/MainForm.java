@@ -2,6 +2,7 @@ package ru.lenpix;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -16,6 +17,7 @@ import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -43,6 +45,14 @@ public class MainForm extends Application {
     private ModeType mode = ModeType.NONE;
     private List<IPaintable> items = new ArrayList<>();
 
+    private double x1Helper;
+    private double y1Helper;
+    private double distance1Helper;
+
+    private double x2Helper;
+    private double y2Helper;
+    private double distance2Helper;
+
     @FXML
     private Stage primaryStage;
 
@@ -66,6 +76,9 @@ public class MainForm extends Application {
 
     @FXML
     private TextField photoWidthField; // линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
+
+    @FXML
+    private TextField photoHeightField; // линейный размер матрицы в миллиметрах по одной из сторон ( высоте )
 
     @Override
     public void start(Stage primaryStage) {
@@ -148,16 +161,52 @@ public class MainForm extends Application {
         double f = Double.parseDouble(focusField.getText());
         // линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
         double width = Double.parseDouble(photoWidthField.getText());
+        // линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
+        double height = Double.parseDouble(photoHeightField.getText());
         // ширина пикселя
         double pixelWSize = width / (int) rightImage.getWidth();
+        // высота пикселя
+        double pixelHSize = height / (int) rightImage.getHeight();
+        // главная точка (центр)
+        double xCenter = rightImage.getWidth()/2;
+        double yCenter = rightImage.getWidth()/2;
 
         if (mode == ModeType.DISTANCE) {
             calcDisplacement(xO, yO);
 
             double deltaX = Math.abs(dx) * pixelWSize / 1000;
-            double distance = (l / 1000 * f / 1000 / deltaX);
+            double distance = ((l / 1000) * (f / 1000) / deltaX);
             addItem(new DistanceItem((int) xO, (int) yO, distance));
             mode = ModeType.NONE;
+        }
+
+        if (mode == ModeType.OBJECTSDISTANCEPARTTWO) {
+            calcDisplacement(xO, yO);
+            x2Helper = xO;
+            y2Helper = yO;
+            double deltaX = Math.abs(dx) * pixelWSize / 1000;
+            distance2Helper = (l / 1000 * f / 1000 / deltaX);
+            double newX1 = distance1Helper * (x1Helper - xCenter) * pixelWSize / f;
+            double newX2 = distance2Helper * (x2Helper - xCenter) * pixelWSize / f;
+            double newY1 = distance1Helper * (y1Helper - yCenter) * pixelHSize / f;
+            double newY2 = distance2Helper * (y2Helper - yCenter) * pixelHSize / f;
+            double result = Math.sqrt(
+                    Math.pow(newX2 - newX1, 2) +
+                    Math.pow(newY2 - newY1, 2) +
+                    Math.pow(distance2Helper - distance1Helper, 2));
+            addItem(new DistanceBetweenObjectsItem(
+                    (int) x1Helper, (int) y1Helper, distance1Helper,
+                    (int) x2Helper, (int) y2Helper, distance2Helper, result));
+            mode = ModeType.NONE;
+        }
+
+        if (mode == ModeType.OBJECTSDISTANCEPARTONE) {
+            calcDisplacement(xO, yO);
+            x1Helper = xO;
+            y1Helper = yO;
+            double deltaX = Math.abs(dx) * pixelWSize / 1000;
+            distance1Helper = (l / 1000 * f / 1000 / deltaX);
+            mode = ModeType.OBJECTSDISTANCEPARTTWO;
         }
 
         updateDisplacementStatus();
@@ -248,8 +297,14 @@ public class MainForm extends Application {
         mode = ModeType.DISTANCE;
     }
 
+    public void distanceBetweenObjectsModeButtonHandler(ActionEvent actionEvent) {
+        mode = ModeType.OBJECTSDISTANCEPARTONE;
+    }
+
     private enum ModeType {
         NONE,
-        DISTANCE
+        DISTANCE,
+        OBJECTSDISTANCEPARTONE,
+        OBJECTSDISTANCEPARTTWO
     }
 }

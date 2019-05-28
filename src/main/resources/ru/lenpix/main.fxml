@@ -17,21 +17,26 @@
       <Separator orientation="VERTICAL" />
         <CheckBox fx:id="overlayWithRightImageCheckbox" mnemonicParsing="false" onAction="#overlayWithRightImageCheckboxHandler" text="Наложить правое изображение" />
       <Separator orientation="VERTICAL" />
-      <Button onAction="#distanceModeButtonHandler" mnemonicParsing="false" text="Дальность" />
+      <Button mnemonicParsing="false" onAction="#distanceModeButtonHandler" text="Дальность" />
+      <Separator orientation="VERTICAL" />
+      <Button mnemonicParsing="false" onAction="#distanceBetweenObjectsModeButtonHandler" text="Дистанция между..." />
     </ToolBar>
     <ScrollPane hbarPolicy="ALWAYS" layoutY="29.0" onKeyPressed="#onKeyboardKeyPressedAction" pannable="true" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
         <Canvas fx:id="canvas" onMouseClicked="#canvasOnMouseClickedHandler" onMouseExited="#canvasOnMouseExitedHandler" onMouseMoved="#canvasOnMouseMovedHandler" />
     </ScrollPane>
    <ToolBar prefHeight="40.0" prefWidth="200.0">
      <items>
-           <TextField fx:id="focusField" promptText="Фокус (мм)" text="3" />
+           <TextField fx:id="focusField" promptText="Фокус (мм)" text="3.5" />
            <Label text="Фокус (мм)" />
          <Separator orientation="VERTICAL" />
-           <TextField fx:id="baseField" promptText="База (мм)" text="50" />
+           <TextField fx:id="baseField" promptText="База (мм)" text="80" />
            <Label text="База (мм)" />
          <Separator orientation="VERTICAL" />
-         <TextField fx:id="photoWidthField" promptText="Ширина (мм)" text="40" />
+         <TextField fx:id="photoWidthField" promptText="Ширина (мм)" text="3.93" />
          <Label text="Ширина (мм)" />
+         <Separator orientation="VERTICAL" />
+         <TextField fx:id="photoHeightField" promptText="Высота (мм)" text="2.95" />
+         <Label text="Высота (мм)" />
      </items>
    </ToolBar>
    <BorderPane>
