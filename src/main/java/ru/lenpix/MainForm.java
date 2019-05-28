@@ -45,13 +45,9 @@ public class MainForm extends Application {
     private ModeType mode = ModeType.NONE;
     private List<IPaintable> items = new ArrayList<>();
 
-    private double x1Helper;
-    private double y1Helper;
-    private double distance1Helper;
-
-    private double x2Helper;
-    private double y2Helper;
-    private double distance2Helper;
+    private double xPoint1Helper;
+    private double yPoint1Helper;
+    private double distancePoint1Helper;
 
     @FXML
     private Stage primaryStage;
@@ -75,10 +71,10 @@ public class MainForm extends Application {
     private TextField baseField; // дистанция между камерами в cантиметрах
 
     @FXML
-    private TextField photoWidthField; // линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
+    private TextField photoMatrixWidthField; // линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
 
     @FXML
-    private TextField photoHeightField; // линейный размер матрицы в миллиметрах по одной из сторон ( высоте )
+    private TextField photoMatrixHeightField; // линейный размер матрицы в миллиметрах по одной из сторон ( высоте )
 
     @Override
     public void start(Stage primaryStage) {
@@ -160,16 +156,16 @@ public class MainForm extends Application {
         // фокус
         double f = Double.parseDouble(focusField.getText());
         // линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
-        double width = Double.parseDouble(photoWidthField.getText());
+        double width = Double.parseDouble(photoMatrixWidthField.getText());
         // линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
-        double height = Double.parseDouble(photoHeightField.getText());
+        double height = Double.parseDouble(photoMatrixHeightField.getText());
         // ширина пикселя
         double pixelWSize = width / (int) rightImage.getWidth();
         // высота пикселя
         double pixelHSize = height / (int) rightImage.getHeight();
         // главная точка (центр)
-        double xCenter = rightImage.getWidth()/2;
-        double yCenter = rightImage.getWidth()/2;
+        double xCenter = rightImage.getWidth() / 2;
+        double yCenter = rightImage.getWidth() / 2;
 
         if (mode == ModeType.DISTANCE) {
             calcDisplacement(xO, yO);
@@ -182,30 +178,28 @@ public class MainForm extends Application {
 
         if (mode == ModeType.OBJECTSDISTANCEPARTTWO) {
             calcDisplacement(xO, yO);
-            x2Helper = xO;
-            y2Helper = yO;
             double deltaX = Math.abs(dx) * pixelWSize / 1000;
-            distance2Helper = (l / 1000 * f / 1000 / deltaX);
-            double newX1 = distance1Helper * (x1Helper - xCenter) * pixelWSize / f;
-            double newX2 = distance2Helper * (x2Helper - xCenter) * pixelWSize / f;
-            double newY1 = distance1Helper * (y1Helper - yCenter) * pixelHSize / f;
-            double newY2 = distance2Helper * (y2Helper - yCenter) * pixelHSize / f;
+            double distance2Point = (l / 1000 * f / 1000 / deltaX);
+            double newX1 = distancePoint1Helper * (xPoint1Helper - xCenter) * pixelWSize / f;
+            double newX2 = distance2Point * (xO - xCenter) * pixelWSize / f;
+            double newY1 = distancePoint1Helper * (yPoint1Helper - yCenter) * pixelHSize / f;
+            double newY2 = distance2Point * (yO - yCenter) * pixelHSize / f;
             double result = Math.sqrt(
                     Math.pow(newX2 - newX1, 2) +
-                    Math.pow(newY2 - newY1, 2) +
-                    Math.pow(distance2Helper - distance1Helper, 2));
+                            Math.pow(newY2 - newY1, 2) +
+                            Math.pow(distance2Point - distancePoint1Helper, 2));
             addItem(new DistanceBetweenObjectsItem(
-                    (int) x1Helper, (int) y1Helper, distance1Helper,
-                    (int) x2Helper, (int) y2Helper, distance2Helper, result));
+                    (int) xPoint1Helper, (int) yPoint1Helper, distancePoint1Helper,
+                    (int) xO, (int) yO, distance2Point, result));
             mode = ModeType.NONE;
         }
 
         if (mode == ModeType.OBJECTSDISTANCEPARTONE) {
             calcDisplacement(xO, yO);
-            x1Helper = xO;
-            y1Helper = yO;
+            xPoint1Helper = xO;
+            yPoint1Helper = yO;
             double deltaX = Math.abs(dx) * pixelWSize / 1000;
-            distance1Helper = (l / 1000 * f / 1000 / deltaX);
+            distancePoint1Helper = (l / 1000 * f / 1000 / deltaX);
             mode = ModeType.OBJECTSDISTANCEPARTTWO;
         }
 
