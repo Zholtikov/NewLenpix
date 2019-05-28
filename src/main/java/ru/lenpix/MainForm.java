@@ -64,17 +64,29 @@ public class MainForm extends Application {
     @FXML
     private Label displacementStatusLabel;
 
+    /**
+     * фокус
+     */
     @FXML
-    private TextField focusField; // фокус
+    private TextField focusField;
 
+    /**
+     * дистанция между камерами в cантиметрах
+     */
     @FXML
-    private TextField baseField; // дистанция между камерами в cантиметрах
+    private TextField baseField;
 
+    /**
+     * линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
+     */
     @FXML
-    private TextField photoMatrixWidthField; // линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
+    private TextField photoMatrixWidthField;
 
+    /**
+     * линейный размер матрицы в миллиметрах по одной из сторон ( высоте )
+     */
     @FXML
-    private TextField photoMatrixHeightField; // линейный размер матрицы в миллиметрах по одной из сторон ( высоте )
+    private TextField photoMatrixHeightField;
 
     @Override
     public void start(Stage primaryStage) {
@@ -151,19 +163,25 @@ public class MainForm extends Application {
         double xO = mouseEvent.getX();
         double yO = mouseEvent.getY();
 
-        // дистанция между камерами в cантиметрах
+        // дистанция между камерами в мм
         double l = Double.parseDouble(baseField.getText());
-        // фокус
+
+        // фокус в мм
         double f = Double.parseDouble(focusField.getText());
-        // линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
+
+        //линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
         double width = Double.parseDouble(photoMatrixWidthField.getText());
+
         // линейный размер матрицы в миллиметрах по одной из сторон ( ширине )
         double height = Double.parseDouble(photoMatrixHeightField.getText());
-        // ширина пикселя
+
+        //ширина пикселя
         double pixelWSize = width / (int) rightImage.getWidth();
-        // высота пикселя
+
+         //высота пикселя
         double pixelHSize = height / (int) rightImage.getHeight();
-        // главная точка (центр)
+
+        //главная точка (центр)
         double xCenter = rightImage.getWidth() / 2;
         double yCenter = rightImage.getWidth() / 2;
 
@@ -172,6 +190,7 @@ public class MainForm extends Application {
 
             double deltaX = Math.abs(dx) * pixelWSize / 1000;
             double distance = ((l / 1000) * (f / 1000) / deltaX);
+
             addItem(new DistanceItem((int) xO, (int) yO, distance));
             mode = ModeType.NONE;
         }
@@ -188,6 +207,7 @@ public class MainForm extends Application {
                     Math.pow(newX2 - newX1, 2) +
                             Math.pow(newY2 - newY1, 2) +
                             Math.pow(distance2Point - distancePoint1Helper, 2));
+
             addItem(new DistanceBetweenObjectsItem(
                     (int) xPoint1Helper, (int) yPoint1Helper, distancePoint1Helper,
                     (int) xO, (int) yO, distance2Point, result));
