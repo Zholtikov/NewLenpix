@@ -32,7 +32,7 @@ public class ObjectSizeItem implements IPaintable {
         gc.strokeLine(x2, y2, x1, y2);
         gc.strokeLine(x1, y2, x1, y1);
         gc.fillOval((x2 + x1) / 2 - 4, (y1 + y2) / 2 - 4, 8.0, 8.0);
-        gc.setFill(Color.GREEN);
+        gc.setFill(Color.web("#4bf221"));
         gc.fillText(Double.toString(realWidth), Math.min(x1, x2), Math.min(y1, y2) - 5);
         gc.fillText(Double.toString(realHeight), Math.max(x1, x2) + 5, (y1 + y2) / 2);
         gc.fillText(Double.toString(distance), (x2 + x1) / 2 - 10 , (y1 + y2) / 2 - 10);

@@ -12,6 +12,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
@@ -25,9 +26,8 @@ import ru.lenpix.algo.ImageOffsetNCCMatrix;
 import ru.lenpix.algo.ImageOffsetNCCMatrixBuilder;
 import ru.lenpix.algo.NCCInterpolation;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +48,11 @@ public class MainForm extends Application {
     private double xPoint1Helper;
     private double yPoint1Helper;
     private double distancePoint1Helper;
+
+    /**
+     * cчетчик операций для отчета
+     */
+    private int reportCounter = 1;
 
     @FXML
     private Stage primaryStage;
@@ -87,6 +92,12 @@ public class MainForm extends Application {
      */
     @FXML
     private TextField photoMatrixHeightField;
+
+    /**
+     * Текст отчёта
+     */
+    @FXML
+    private TextArea reportField;
 
     @Override
     public void start(Stage primaryStage) {
@@ -192,6 +203,8 @@ public class MainForm extends Application {
             double distance = ((l / 1000) * (f / 1000) / deltaX);
 
             addItem(new DistanceItem((int) xO, (int) yO, distance));
+            reportField.appendText(reportCounter + ") Дистанция до объекта N" + " равняется " + distance + " метров" + "\n");
+            reportCounter += 1;
             mode = ModeType.NONE;
         }
 
@@ -208,6 +221,10 @@ public class MainForm extends Application {
                             Math.pow(newY2 - newY1, 2) +
                             Math.pow(distance2Point - distancePoint1Helper, 2));
 
+            reportField.appendText(reportCounter + ") Дистанция между объектом A и объектом B равняется " + result + " метров" + "\n"
+                    + "  Дистанция до объекта A" + " равняется " + distancePoint1Helper + " метров" + "\n"
+                    + "  Дистанция до объекта B" + " равняется " + distance2Point + " метров" + "\n");
+            reportCounter += 1;
             addItem(new DistanceBetweenObjectsItem(
                     (int) xPoint1Helper, (int) yPoint1Helper, distancePoint1Helper,
                     (int) xO, (int) yO, distance2Point, result));
@@ -229,6 +246,10 @@ public class MainForm extends Application {
             double distance = ((l / 1000) * (f / 1000) / deltaX);
             double realWidth = distance * (Math.abs(xO - xPoint1Helper)) * pixelWSize / f;
             double realHeight = distance * (Math.abs(yO - yPoint1Helper)) * pixelHSize / f;
+
+            reportField.appendText(reportCounter + ") Размеры объекта M:  ширина =" + realWidth + " метров; высота = " + realHeight + " метров" + "\n" +
+                    "  Дистанция до объекта M" + " равняется " + distance + " метров" + "\n");
+            reportCounter += 1;
             addItem(new ObjectSizeItem(
                     (int) xPoint1Helper, (int) yPoint1Helper,
                     (int) xO, (int) yO, distance, realWidth, realHeight));
@@ -335,6 +356,21 @@ public class MainForm extends Application {
 
     public void realSizeObjectModeButtonHandler(ActionEvent actionEvent) {
         mode = ModeType.OBJECT_SIZE_PART_ONE;
+    }
+
+    public void reportButtonHandler(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        if (file != null) {
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(reportField.getText());
+            }
+        }
     }
 
     private enum ModeType {
