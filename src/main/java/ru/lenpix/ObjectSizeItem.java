@@ -13,7 +13,6 @@ public class ObjectSizeItem implements IPaintable {
     private final double realHeight;
 
     public ObjectSizeItem(int x1, int y1, int x2, int y2, double distance, double realWidth, double realHeight) {
-
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
