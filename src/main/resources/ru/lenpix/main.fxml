@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
@@ -20,6 +21,10 @@
       <Button mnemonicParsing="false" onAction="#distanceModeButtonHandler" text="Дальность" />
       <Separator orientation="VERTICAL" />
       <Button mnemonicParsing="false" onAction="#distanceBetweenObjectsModeButtonHandler" text="Дистанция между..." />
+      <Separator orientation="VERTICAL" />
+      <Button mnemonicParsing="false" onAction="#realSizeObjectModeButtonHandler" text="Размер" />
+      <Separator orientation="VERTICAL" />
+      <Button mnemonicParsing="false" onAction="#reportButtonHandler" text="Отчёт" />
     </ToolBar>
     <ScrollPane hbarPolicy="ALWAYS" layoutY="29.0" onKeyPressed="#onKeyboardKeyPressedAction" pannable="true" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
         <Canvas fx:id="canvas" onMouseClicked="#canvasOnMouseClickedHandler" onMouseExited="#canvasOnMouseExitedHandler" onMouseMoved="#canvasOnMouseMovedHandler" />
@@ -46,5 +51,8 @@
       <right>
          <Label fx:id="coordinatesInfoLabel" BorderPane.alignment="CENTER" />
       </right>
+      <bottom>
+         <TextArea fx:id="reportField" prefHeight="113.0" prefWidth="660.0" BorderPane.alignment="CENTER" />
+      </bottom>
    </BorderPane>
 </VBox>
