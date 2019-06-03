@@ -10,49 +10,61 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="435.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.lenpix.MainForm">
     <ToolBar prefHeight="40.0" prefWidth="200.0">
-        <Button mnemonicParsing="false" onAction="#openFilesButtonHandler" text="Загрузить изображения" />
-      <Separator orientation="VERTICAL" />
+        <Button mnemonicParsing="false" onAction="#openFilesLeftButtonHandler" text="Загрузить левое изображения" />
+        <Separator orientation="VERTICAL" />
+        <Button mnemonicParsing="false" onAction="#openFilesRightButtonHandler" text="Загрузить правое изображения" />
+        <Separator orientation="VERTICAL" />
         <CheckBox fx:id="overlayWithRightImageCheckbox" mnemonicParsing="false" onAction="#overlayWithRightImageCheckboxHandler" text="Наложить правое изображение" />
-      <Separator orientation="VERTICAL" />
-      <Button mnemonicParsing="false" onAction="#distanceModeButtonHandler" text="Дальность" />
-      <Separator orientation="VERTICAL" />
-      <Button mnemonicParsing="false" onAction="#distanceBetweenObjectsModeButtonHandler" text="Дистанция между..." />
-      <Separator orientation="VERTICAL" />
-      <Button mnemonicParsing="false" onAction="#realSizeObjectModeButtonHandler" text="Размер" />
-      <Separator orientation="VERTICAL" />
-      <Button mnemonicParsing="false" onAction="#reportButtonHandler" text="Отчёт" />
+        <Separator orientation="VERTICAL" />
+        <Button mnemonicParsing="false" onAction="#distanceModeButtonHandler" text="Дальность" />
+        <Separator orientation="VERTICAL" />
+        <Button mnemonicParsing="false" onAction="#distanceBetweenObjectsModeButtonHandler" text="Дистанция между..." />
+        <Separator orientation="VERTICAL" />
+        <Button mnemonicParsing="false" onAction="#realSizeObjectModeButtonHandler" text="Размер" />
+        <Separator orientation="VERTICAL" />
+        <Button mnemonicParsing="false" onAction="#reportButtonHandler" text="Отчёт" />
     </ToolBar>
-    <ScrollPane hbarPolicy="ALWAYS" layoutY="29.0" onKeyPressed="#onKeyboardKeyPressedAction" pannable="true" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
-        <Canvas fx:id="canvas" onMouseClicked="#canvasOnMouseClickedHandler" onMouseExited="#canvasOnMouseExitedHandler" onMouseMoved="#canvasOnMouseMovedHandler" />
-    </ScrollPane>
-   <ToolBar prefHeight="40.0" prefWidth="200.0">
-     <items>
-           <TextField fx:id="focusField" promptText="Фокус (мм)" text="3.5" />
-           <Label text="Фокус (мм)" />
-         <Separator orientation="VERTICAL" />
-           <TextField fx:id="baseField" promptText="База (мм)" text="80" />
-           <Label text="База (мм)" />
-         <Separator orientation="VERTICAL" />
-         <TextField fx:id="photoMatrixWidthField" promptText="Ширина (мм)" text="3.93" />
-         <Label text="Ширина матрицы (мм)" />
-         <Separator orientation="VERTICAL" />
-         <TextField fx:id="photoMatrixHeightField" promptText="Высота (мм)" text="2.95" />
-         <Label text="Высота матрицы(мм)" />
-     </items>
-   </ToolBar>
-   <BorderPane>
-      <left>
-         <Label fx:id="displacementStatusLabel" BorderPane.alignment="CENTER" />
-      </left>
-      <right>
-         <Label fx:id="coordinatesInfoLabel" BorderPane.alignment="CENTER" />
-      </right>
-      <bottom>
-         <TextArea fx:id="reportField" prefHeight="113.0" prefWidth="660.0" BorderPane.alignment="CENTER" />
-      </bottom>
-   </BorderPane>
+    <HBox prefHeight="266.0" prefWidth="660.0" VBox.vgrow="ALWAYS">
+        <children>
+            <ScrollPane hbarPolicy="ALWAYS" onKeyPressed="#onKeyboardKeyPressedAction" pannable="true" prefHeight="230.0" prefWidth="329.0" vbarPolicy="ALWAYS" HBox.hgrow="ALWAYS">
+                <Canvas fx:id="canvas" onMouseClicked="#canvasOnMouseClickedHandler" onMouseExited="#canvasOnMouseExitedHandler" onMouseMoved="#canvasOnMouseMovedHandler" />
+            </ScrollPane>
+            <ScrollPane hbarPolicy="ALWAYS" onKeyPressed="#onKeyboardKeyPressedAction" pannable="true" prefHeight="230.0" prefWidth="329.0" vbarPolicy="ALWAYS" HBox.hgrow="ALWAYS">
+                <content>
+                    <Canvas fx:id="canvasRight" onMouseExited="#canvasOnMouseExitedHandler" onMouseMoved="#canvasOnMouseMovedHandler" />
+                </content>
+            </ScrollPane>
+        </children>
+    </HBox>
+    <ToolBar prefHeight="40.0" prefWidth="200.0">
+        <items>
+            <TextField fx:id="focusField" promptText="Фокус (мм)" text="3.5" />
+            <Label text="Фокус (мм)" />
+            <Separator orientation="VERTICAL" />
+            <TextField fx:id="baseField" promptText="База (мм)" text="70" />
+            <Label text="База (мм)" />
+            <Separator orientation="VERTICAL" />
+            <TextField fx:id="photoMatrixWidthField" promptText="Ширина (мм)" text="3.93" />
+            <Label text="Ширина матрицы (мм)" />
+            <Separator orientation="VERTICAL" />
+            <TextField fx:id="photoMatrixHeightField" promptText="Высота (мм)" text="2.95" />
+            <Label text="Высота матрицы(мм)" />
+        </items>
+    </ToolBar>
+    <BorderPane>
+        <left>
+            <Label fx:id="displacementStatusLabel" BorderPane.alignment="CENTER" />
+        </left>
+        <right>
+            <Label fx:id="coordinatesInfoLabel" BorderPane.alignment="CENTER" />
+        </right>
+        <bottom>
+            <TextArea fx:id="reportField" prefHeight="113.0" prefWidth="660.0" BorderPane.alignment="CENTER" />
+        </bottom>
+    </BorderPane>
 </VBox>
