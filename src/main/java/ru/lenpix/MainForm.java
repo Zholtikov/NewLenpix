@@ -116,24 +116,38 @@ public class MainForm extends Application {
     }
 
     @FXML
-    private void openFilesButtonHandler(ActionEvent event) {
+    private void openFilesLeftButtonHandler(ActionEvent event) {
         List<File> selected = new FileChooser().showOpenMultipleDialog(primaryStage);
-        if (selected != null && selected.size() == 2) {
-            Image leftImage = new Image(selected.get(0).toURI().toString());
-            Image rightImage = new Image(selected.get(1).toURI().toString());
+        if (selected != null && selected.size() == 1) {
 
             /*// Для работы корректной работы нам нужны только изображения одного размера
             if (leftImage.getWidth() == rightImage.getWidth() && leftImage.getHeight() == rightImage.getHeight()) {
                 return;
             }*/
 
-            this.leftImage = leftImage;
-            this.rightImage = rightImage;
+            this.leftImage = new Image(selected.get(0).toURI().toString());
             items.clear();
             reportField.clear();
             repaintCanvas();
-            repaintRightCanvas();
 
+
+        }
+    }
+
+    @FXML
+    private void openFilesRightButtonHandler(ActionEvent event) {
+        List<File> selected = new FileChooser().showOpenMultipleDialog(primaryStage);
+        if (selected != null && selected.size() == 1) {
+
+            /*// Для работы корректной работы нам нужны только изображения одного размера
+            if (leftImage.getWidth() == rightImage.getWidth() && leftImage.getHeight() == rightImage.getHeight()) {
+                return;
+            }*/
+
+            this.rightImage = new Image(selected.get(0).toURI().toString());
+            items.clear();
+            reportField.clear();
+            repaintRightCanvas();
             updateControllersThatRequireImages();
         }
     }
@@ -248,7 +262,7 @@ public class MainForm extends Application {
     }
 
     private void calcDisplacement(double userX, double userY) {
-        int squareSize = 20;
+        int squareSize = 50;
 
         // Вычисляем левый угол квадрата, в который ткнул юзер
         int x = (int) (userX - squareSize / 2);
