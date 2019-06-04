@@ -6,6 +6,7 @@ public class ImageOffsetNCCMatrix {
 
     public ImageOffsetNCCMatrix(DoubleMatrix nccMatrix){
         this.nccMatrix = nccMatrix;
+
         findMaxOffset(nccMatrix);
     }
 

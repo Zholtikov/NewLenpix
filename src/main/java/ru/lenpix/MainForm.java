@@ -2,7 +2,6 @@ package ru.lenpix;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -18,7 +17,6 @@ import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -27,7 +25,6 @@ import ru.lenpix.algo.ImageOffsetNCCMatrixBuilder;
 import ru.lenpix.algo.NCCInterpolation;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,7 +125,7 @@ public class MainForm extends Application {
             this.leftImage = new Image(selected.get(0).toURI().toString());
             items.clear();
             reportField.clear();
-            repaintCanvas();
+            repaintPrimaryCanvas();
 
 
         }
@@ -147,7 +144,7 @@ public class MainForm extends Application {
             this.rightImage = new Image(selected.get(0).toURI().toString());
             items.clear();
             reportField.clear();
-            repaintRightCanvas();
+            repaintSecondaryCanvas();
             updateControllersThatRequireImages();
         }
     }
@@ -155,12 +152,12 @@ public class MainForm extends Application {
     @FXML
     public void overlayWithRightImageCheckboxHandler(ActionEvent event) {
         overlayWithRightImage = !overlayWithRightImage;
-        repaintCanvas();
-        repaintRightCanvas();
+        repaintPrimaryCanvas();
+        repaintSecondaryCanvas();
         updateDisplacementStatus();
     }
 
-    private void repaintCanvas() {
+    private void repaintPrimaryCanvas() {
         canvas.requestFocus();
 
         canvas.setWidth(leftImage.getWidth());
@@ -171,11 +168,11 @@ public class MainForm extends Application {
         drawImageOnCanvas(gc, leftImage, 0, 0);
         if (overlayWithRightImage) drawImageOnCanvas(gc, rightImage, dx, dy);
         for (IPaintable item : items) {
-            item.paint(gc, false);
+            item.paintOnPrimaryCanvas(gc);
         }
     }
 
-    private void repaintRightCanvas() {
+    private void repaintSecondaryCanvas() {
         canvasRight.requestFocus();
 
         canvasRight.setWidth(rightImage.getWidth());
@@ -185,7 +182,7 @@ public class MainForm extends Application {
         gc.clearRect(0, 0, canvasRight.getWidth(), canvasRight.getHeight());
         drawImageOnRightCanvas(gc, rightImage, 0, 0);
         for (IPaintable item : items) {
-            item.paint(gc, true);
+            item.paintOnSecondaryCanvas(gc, dx, dy);
         }
     }
 
@@ -229,7 +226,7 @@ public class MainForm extends Application {
 
         //главная точка (центр)
         double xCenter = rightImage.getWidth() / 2;
-        double yCenter = rightImage.getWidth() / 2;
+        double yCenter = rightImage.getHeight() / 2;
 
         if (mode == ModeType.DISTANCE) {
             calcDistanceMode(xO, yO, pixelWSize, l, f);
@@ -257,8 +254,8 @@ public class MainForm extends Application {
         }
 
         updateDisplacementStatus();
-        repaintCanvas();
-        repaintRightCanvas();
+        repaintPrimaryCanvas();
+        repaintSecondaryCanvas();
     }
 
     private void calcDisplacement(double userX, double userY) {
@@ -313,7 +310,7 @@ public class MainForm extends Application {
         if (keyEvent.getCode() == KeyCode.S)
             dy++;
 
-        repaintCanvas();
+        repaintPrimaryCanvas();
 
         updateDisplacementStatus();
     }
@@ -337,8 +334,9 @@ public class MainForm extends Application {
 
     private void addItem(IPaintable item) {
         items.add(item);
-        repaintCanvas();
-        repaintRightCanvas();
+
+        repaintPrimaryCanvas();
+        repaintSecondaryCanvas();
     }
 
 
@@ -382,8 +380,8 @@ public class MainForm extends Application {
         calcDisplacement(xO, yO);
         double deltaX = Math.abs(dx) * pixelWSize / 1000;
         double distance = ((l / 1000) * (f / 1000) / deltaX);
-        System.out.println(dx);
-        addItem(new DistanceItem((int) xO, (int) yO, distance, dx, dy));
+
+        addItem(new DistanceItem((int) xO, (int) yO, distance));
         reportField.appendText(items.size() + ") Дистанция до объекта N" + " равняется " + distance + " метров" + System.lineSeparator());
 
     }
@@ -410,7 +408,7 @@ public class MainForm extends Application {
 
         addItem(new DistanceBetweenObjectsItem(
                 (int) point1Helper.getX(), (int) point1Helper.getY(), distancePoint1Helper,
-                (int) xO, (int) yO, distance2Point, result, dx, dy));
+                (int) xO, (int) yO, distance2Point, result));
         reportField.appendText(items.size() + ") Дистанция между объектом A и объектом B равняется " + result + " метров" + System.lineSeparator()
                 + "  Дистанция до объекта A" + " равняется " + distancePoint1Helper + " метров" + System.lineSeparator()
                 + "  Дистанция до объекта B" + " равняется " + distance2Point + " метров" + System.lineSeparator());
@@ -424,8 +422,11 @@ public class MainForm extends Application {
         double realHeight = distance * (Math.abs(yO - point1Helper.getY())) * pixelHSize / f;
 
         addItem(new ObjectSizeItem(
-                (int) point1Helper.getX(), (int) point1Helper.getY(),
-                (int) xO, (int) yO, distance, realWidth, realHeight, dx, dy));
+                (int) point1Helper.getX(),
+                (int) point1Helper.getY(),
+                (int) xO, (int) yO,
+                distance, realWidth, realHeight));
+
         reportField.appendText(items.size() + ") Размеры объекта M:  ширина =" + realWidth +
                 " метров; высота = " + realHeight + " метров" + System.lineSeparator() +
                 "  Дистанция до объекта M" + " равняется " + distance + " метров" + System.lineSeparator());

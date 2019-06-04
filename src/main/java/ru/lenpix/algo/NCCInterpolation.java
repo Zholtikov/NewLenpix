@@ -9,7 +9,7 @@ public class NCCInterpolation {
 
     public NCCInterpolation(ImageOffsetNCCMatrix matrix) {
         this.matrix = matrix;
-        calcInterMarix();
+        calcInterMatrix();
     }
 
 
@@ -47,7 +47,7 @@ public class NCCInterpolation {
         return num / (2 * den);
     }
 
-    private void calcInterMarix() {
+    private void calcInterMatrix() {
         int maxDx = matrix.getMaxDX();
         int maxDy = matrix.getMaxDY();
 

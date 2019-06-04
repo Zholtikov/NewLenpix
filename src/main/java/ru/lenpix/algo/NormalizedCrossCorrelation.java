@@ -1,9 +1,5 @@
 package ru.lenpix.algo;
 
-import java.util.function.BiFunction;
-
-import static java.lang.Math.sqrt;
-
 public class NormalizedCrossCorrelation {
     private final DoubleMatrix mat1;
     private final DoubleMatrix mat2;
