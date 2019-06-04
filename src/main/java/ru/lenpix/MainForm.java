@@ -55,6 +55,9 @@ public class MainForm extends Application {
     private Canvas canvas;
 
     @FXML
+    private Canvas canvasRight;
+
+    @FXML
     private Label coordinatesInfoLabel;
 
     @FXML
@@ -113,22 +116,38 @@ public class MainForm extends Application {
     }
 
     @FXML
-    private void openFilesButtonHandler(ActionEvent event) {
+    private void openFilesLeftButtonHandler(ActionEvent event) {
         List<File> selected = new FileChooser().showOpenMultipleDialog(primaryStage);
-        if (selected != null && selected.size() == 2) {
-            Image leftImage = new Image(selected.get(0).toURI().toString());
-            Image rightImage = new Image(selected.get(1).toURI().toString());
+        if (selected != null && selected.size() == 1) {
 
             /*// Для работы корректной работы нам нужны только изображения одного размера
             if (leftImage.getWidth() == rightImage.getWidth() && leftImage.getHeight() == rightImage.getHeight()) {
                 return;
             }*/
 
-            this.leftImage = leftImage;
-            this.rightImage = rightImage;
+            this.leftImage = new Image(selected.get(0).toURI().toString());
             items.clear();
+            reportField.clear();
             repaintCanvas();
 
+
+        }
+    }
+
+    @FXML
+    private void openFilesRightButtonHandler(ActionEvent event) {
+        List<File> selected = new FileChooser().showOpenMultipleDialog(primaryStage);
+        if (selected != null && selected.size() == 1) {
+
+            /*// Для работы корректной работы нам нужны только изображения одного размера
+            if (leftImage.getWidth() == rightImage.getWidth() && leftImage.getHeight() == rightImage.getHeight()) {
+                return;
+            }*/
+
+            this.rightImage = new Image(selected.get(0).toURI().toString());
+            items.clear();
+            reportField.clear();
+            repaintRightCanvas();
             updateControllersThatRequireImages();
         }
     }
@@ -137,7 +156,7 @@ public class MainForm extends Application {
     public void overlayWithRightImageCheckboxHandler(ActionEvent event) {
         overlayWithRightImage = !overlayWithRightImage;
         repaintCanvas();
-
+        repaintRightCanvas();
         updateDisplacementStatus();
     }
 
@@ -152,7 +171,21 @@ public class MainForm extends Application {
         drawImageOnCanvas(gc, leftImage, 0, 0);
         if (overlayWithRightImage) drawImageOnCanvas(gc, rightImage, dx, dy);
         for (IPaintable item : items) {
-            item.paint(gc);
+            item.paint(gc, false);
+        }
+    }
+
+    private void repaintRightCanvas() {
+        canvasRight.requestFocus();
+
+        canvasRight.setWidth(rightImage.getWidth());
+        canvasRight.setHeight(rightImage.getHeight());
+
+        GraphicsContext gc = canvasRight.getGraphicsContext2D();
+        gc.clearRect(0, 0, canvasRight.getWidth(), canvasRight.getHeight());
+        drawImageOnRightCanvas(gc, rightImage, 0, 0);
+        for (IPaintable item : items) {
+            item.paint(gc, true);
         }
     }
 
@@ -161,6 +194,14 @@ public class MainForm extends Application {
         gc.setGlobalBlendMode(BlendMode.OVERLAY);
         gc.translate(dx, dy);
         gc.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.restore();
+    }
+
+    private void drawImageOnRightCanvas(GraphicsContext gc, Image image, int dx, int dy) {
+        gc.save();
+        gc.setGlobalBlendMode(BlendMode.OVERLAY);
+        gc.translate(dx, dy);
+        gc.drawImage(image, 0, 0, canvasRight.getWidth(), canvasRight.getHeight());
         gc.restore();
     }
 
@@ -217,10 +258,11 @@ public class MainForm extends Application {
 
         updateDisplacementStatus();
         repaintCanvas();
+        repaintRightCanvas();
     }
 
     private void calcDisplacement(double userX, double userY) {
-        int squareSize = 20;
+        int squareSize = 50;
 
         // Вычисляем левый угол квадрата, в который ткнул юзер
         int x = (int) (userX - squareSize / 2);
@@ -296,6 +338,7 @@ public class MainForm extends Application {
     private void addItem(IPaintable item) {
         items.add(item);
         repaintCanvas();
+        repaintRightCanvas();
     }
 
 
@@ -339,8 +382,8 @@ public class MainForm extends Application {
         calcDisplacement(xO, yO);
         double deltaX = Math.abs(dx) * pixelWSize / 1000;
         double distance = ((l / 1000) * (f / 1000) / deltaX);
-
-        addItem(new DistanceItem((int) xO, (int) yO, distance));
+        System.out.println(dx);
+        addItem(new DistanceItem((int) xO, (int) yO, distance, dx, dy));
         reportField.appendText(items.size() + ") Дистанция до объекта N" + " равняется " + distance + " метров" + System.lineSeparator());
 
     }
@@ -367,7 +410,7 @@ public class MainForm extends Application {
 
         addItem(new DistanceBetweenObjectsItem(
                 (int) point1Helper.getX(), (int) point1Helper.getY(), distancePoint1Helper,
-                (int) xO, (int) yO, distance2Point, result));
+                (int) xO, (int) yO, distance2Point, result, dx, dy));
         reportField.appendText(items.size() + ") Дистанция между объектом A и объектом B равняется " + result + " метров" + System.lineSeparator()
                 + "  Дистанция до объекта A" + " равняется " + distancePoint1Helper + " метров" + System.lineSeparator()
                 + "  Дистанция до объекта B" + " равняется " + distance2Point + " метров" + System.lineSeparator());
@@ -382,7 +425,7 @@ public class MainForm extends Application {
 
         addItem(new ObjectSizeItem(
                 (int) point1Helper.getX(), (int) point1Helper.getY(),
-                (int) xO, (int) yO, distance, realWidth, realHeight));
+                (int) xO, (int) yO, distance, realWidth, realHeight, dx, dy));
         reportField.appendText(items.size() + ") Размеры объекта M:  ширина =" + realWidth +
                 " метров; высота = " + realHeight + " метров" + System.lineSeparator() +
                 "  Дистанция до объекта M" + " равняется " + distance + " метров" + System.lineSeparator());
