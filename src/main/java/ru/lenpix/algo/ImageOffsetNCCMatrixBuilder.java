@@ -46,16 +46,16 @@ public class ImageOffsetNCCMatrixBuilder {
         int minWidth = Math.min(leftImageBrightness.getWidth(), rightImageBrightness.getWidth());
         int minHeight = Math.min(leftImageBrightness.getHeight(), rightImageBrightness.getHeight());
 
-        int dxMax = minWidth - x - squareSize + 1;
-        int dyMax = minHeight - y - squareSize + 1;
-        DoubleMatrix nccMatrix = DoubleMatrix.createNew(dxMax, dyMax);
+        int dxMax = (minWidth - x - squareSize) / 3;
+        int dxMin = (x) / 3;
+        int dyMax = (minHeight - y - squareSize) / 3;
+        int dyMin = (y) / 3;
+        DoubleSquareMap nccMatrix = new DoubleSquareMap(-dxMin, dxMax, -dyMin, dyMax);
 
-        for (int dx = 0; dx < nccMatrix.getWidth(); dx++) {
-            for (int dy = 0; dy < nccMatrix.getHeight(); dy++) {
+        for (int dx = nccMatrix.getMinX(); dx <= nccMatrix.getMaxX(); dx++) {
+            for (int dy = nccMatrix.getMinY(); dy <= nccMatrix.getMaxY(); dy++) {
                 nccMatrix.set(dx, dy, ncc.apply(dx, dy));
             }
-
-            System.out.println(dx * nccMatrix.getWidth() + "/" + nccMatrix.getWidth() * nccMatrix.getHeight());
         }
 
         return new ImageOffsetNCCMatrix(nccMatrix);

@@ -24,7 +24,10 @@ import ru.lenpix.algo.ImageOffsetNCCMatrix;
 import ru.lenpix.algo.ImageOffsetNCCMatrixBuilder;
 import ru.lenpix.algo.NCCInterpolation;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -259,7 +262,7 @@ public class MainForm extends Application {
     }
 
     private void calcDisplacement(double userX, double userY) {
-        int squareSize = 50;
+        int squareSize = 100;
 
         // Вычисляем левый угол квадрата, в который ткнул юзер
         int x = (int) (userX - squareSize / 2);
