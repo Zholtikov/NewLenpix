@@ -43,16 +43,16 @@
     </HBox>
     <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
-            <TextField fx:id="focusField" promptText="Фокус (мм)" text="3.5" />
+            <TextField fx:id="focusField" promptText="Фокус (мм)" text="18.0" />
             <Label text="Фокус (мм)" />
             <Separator orientation="VERTICAL" />
             <TextField fx:id="baseField" promptText="База (мм)" text="70" />
             <Label text="База (мм)" />
             <Separator orientation="VERTICAL" />
-            <TextField fx:id="photoMatrixWidthField" promptText="Ширина (мм)" text="3.93" />
+            <TextField fx:id="photoMatrixWidthField" promptText="Ширина (мм)" text="22.3" />
             <Label text="Ширина матрицы (мм)" />
             <Separator orientation="VERTICAL" />
-            <TextField fx:id="photoMatrixHeightField" promptText="Высота (мм)" text="2.95" />
+            <TextField fx:id="photoMatrixHeightField" promptText="Высота (мм)" text="14.9" />
             <Label text="Высота матрицы(мм)" />
         </items>
     </ToolBar>
