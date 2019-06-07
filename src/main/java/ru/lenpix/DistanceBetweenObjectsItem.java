@@ -50,21 +50,21 @@ public class DistanceBetweenObjectsItem implements IPaintable {
     @Override
     public void paintOnSecondaryCanvas(GraphicsContext gc, int dx, int dy) {
         gc.setFill(Color.web("#4bf221"));
-        gc.fillText(Double.toString(distanceTo1Point), x1 + 15 - dx, y1 + 5);
-        gc.fillOval(x1 - 4 - dx, y1 - 4, 8.0, 8.0);
+        gc.fillText(Double.toString(distanceTo1Point), x1 + 15 - dx, y1 + 5 - dy);
+        gc.fillOval(x1 - 4 - dx, y1 - 4 - dy, 8.0, 8.0);
 
         gc.setFill(Color.web("#4bf221"));
-        gc.fillText(Double.toString(distanceTo2Point), x2 + 15 - dx, y2 + 5);
-        gc.fillOval(x2 - 4 - dx, y2 - 4, 8.0, 8.0);
+        gc.fillText(Double.toString(distanceTo2Point), x2 + 15 - dx, y2 + 5 - dy);
+        gc.fillOval(x2 - 4 - dx, y2 - 4 - dy, 8.0, 8.0);
 
         gc.setStroke(Color.RED);
         gc.setLineWidth(5);
-        gc.strokeLine(x1 - dx, y1, x2 - dx, y2);
+        gc.strokeLine(x1 - dx, y1 - dy, x2 - dx, y2 - dy);
         gc.setFill(Color.web("#4bf221"));
-        if (Math.abs(y2 - y1) < 5) {
-            gc.fillText(Double.toString(distanceBetween), (x1 + x2) / 2 - dx, (y1 + y2) / 2 + 10);
+        if (Math.abs((y2 - dy) - (y1 - dy)) < 5) {
+            gc.fillText(Double.toString(distanceBetween), (x1 + x2) / 2 - dx, (y1 + y2) / 2 + 10 - dy);
         } else {
-            gc.fillText(Double.toString(distanceBetween), (x1 + x2) / 2 + 10 - dx, (y1 + y2) / 2);
+            gc.fillText(Double.toString(distanceBetween), (x1 + x2) / 2 + 10 - dx, (y1 + y2) / 2 - dy);
         }
     }
 }

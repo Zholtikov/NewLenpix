@@ -15,19 +15,21 @@
 
 <VBox prefHeight="435.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.lenpix.MainForm">
     <ToolBar prefHeight="40.0" prefWidth="200.0">
-        <Button mnemonicParsing="false" onAction="#openFilesLeftButtonHandler" text="Загрузить левое изображения" />
+        <Button mnemonicParsing="false" onAction="#openFilesLeftButtonHandler" text="Загрузить левое изображение" />
         <Separator orientation="VERTICAL" />
-        <Button mnemonicParsing="false" onAction="#openFilesRightButtonHandler" text="Загрузить правое изображения" />
+        <Button mnemonicParsing="false" onAction="#openFilesRightButtonHandler" text="Загрузить правое изображение" />
         <Separator orientation="VERTICAL" />
         <CheckBox fx:id="overlayWithRightImageCheckbox" mnemonicParsing="false" onAction="#overlayWithRightImageCheckboxHandler" text="Наложить правое изображение" />
         <Separator orientation="VERTICAL" />
-        <Button mnemonicParsing="false" onAction="#distanceModeButtonHandler" text="Дальность" />
+        <Button mnemonicParsing="false" onAction="#distanceModeButtonHandler" text="Дальность до объекта" />
         <Separator orientation="VERTICAL" />
-        <Button mnemonicParsing="false" onAction="#distanceBetweenObjectsModeButtonHandler" text="Дистанция между..." />
+        <Button mnemonicParsing="false" onAction="#distanceBetweenObjectsModeButtonHandler" text="Дистанция между объектами" />
         <Separator orientation="VERTICAL" />
-        <Button mnemonicParsing="false" onAction="#realSizeObjectModeButtonHandler" text="Размер" />
+        <Button mnemonicParsing="false" onAction="#realSizeObjectModeButtonHandler" text="Размеры объекта" />
         <Separator orientation="VERTICAL" />
         <Button mnemonicParsing="false" onAction="#reportButtonHandler" text="Отчёт" />
+        <Separator orientation="VERTICAL" />
+        <Button mnemonicParsing="false" onAction="#CancelButtonHandler" text="Отмена" />
     </ToolBar>
     <HBox prefHeight="266.0" prefWidth="660.0" VBox.vgrow="ALWAYS">
         <children>

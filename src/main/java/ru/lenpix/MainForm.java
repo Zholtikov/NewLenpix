@@ -370,6 +370,20 @@ public class MainForm extends Application {
         }
     }
 
+    public void CancelButtonHandler(ActionEvent actionEvent) {
+        items.remove(items.size()-1);
+
+        repaintPrimaryCanvas();
+        repaintSecondaryCanvas();
+
+        String[] array = reportField.getText().split(System.lineSeparator());
+        StringBuilder textToSet = new StringBuilder();
+        for(int i=0; i<array.length-1; i++){
+            textToSet.append(array[i]).append("\n");
+        }
+        reportField.setText(textToSet.toString());
+    }
+
     private enum ModeType {
         NONE,
         DISTANCE,

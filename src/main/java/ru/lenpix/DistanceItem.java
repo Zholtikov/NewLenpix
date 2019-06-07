@@ -25,8 +25,8 @@ public class DistanceItem implements IPaintable {
     @Override
     public void paintOnSecondaryCanvas(GraphicsContext gc, int dx, int dy) {
         gc.setFill(Color.RED);
-        gc.fillText(Double.toString(distance), x - 10 - dx, y - 20);
-        gc.fillOval(x - 4 - dx, y - 4, 8.0, 8.0);
+        gc.fillText(Double.toString(distance), x - 10 - dx, y - 20 - dy);
+        gc.fillOval(x - 4 - dx, y - 4 - dy, 8.0, 8.0);
 
     }
 }
