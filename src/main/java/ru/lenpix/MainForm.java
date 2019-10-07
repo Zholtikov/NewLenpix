@@ -396,7 +396,7 @@ public class MainForm extends Application {
     private void calcDistanceMode(double xO, double yO, double pixelWSize, double l, double f) {
         calcDisplacement(xO, yO);
         double deltaX = Math.abs(dx) * pixelWSize / 1000;
-        double distance = ((l / 1000) * (f / 1000) / deltaX);
+        double distance = Math.round(((l / 1000) * (f / 1000) / deltaX)*100.0)/100.0;
 
         addItem(new DistanceItem((int) xO, (int) yO, distance));
         reportField.appendText(items.size() + ") Дистанция до объекта N" + " равняется " + distance + " метров" + System.lineSeparator());
@@ -407,21 +407,21 @@ public class MainForm extends Application {
         calcDisplacement(xO, yO);
         point1Helper = new Point2D(xO, yO);
         double deltaX = Math.abs(dx) * pixelWSize / 1000;
-        distancePoint1Helper = (l / 1000 * f / 1000 / deltaX);
+        distancePoint1Helper = Math.round((l / 1000 * f / 1000 / deltaX)*100.0)/100.0;
     }
 
     private void calcObjectsDistancePartTwo(double xO, double yO, double pixelWSize, double pixelHSize, double l, double f, double xCenter, double yCenter) {
         calcDisplacement(xO, yO);
         double deltaX = Math.abs(dx) * pixelWSize / 1000;
-        double distance2Point = (l / 1000 * f / 1000 / deltaX);
+        double distance2Point = Math.round((l / 1000 * f / 1000 / deltaX)*100.0)/100.0;
         double newX1 = distancePoint1Helper * (point1Helper.getX() - xCenter) * pixelWSize / f;
         double newX2 = distance2Point * (xO - xCenter) * pixelWSize / f;
         double newY1 = distancePoint1Helper * (point1Helper.getY() - yCenter) * pixelHSize / f;
         double newY2 = distance2Point * (yO - yCenter) * pixelHSize / f;
-        double result = Math.sqrt(
+        double result = Math.round(Math.sqrt(
                 Math.pow(newX2 - newX1, 2) +
                         Math.pow(newY2 - newY1, 2) +
-                        Math.pow(distance2Point - distancePoint1Helper, 2));
+                        Math.pow(distance2Point - distancePoint1Helper, 2))*100.0)/100.0;
 
         addItem(new DistanceBetweenObjectsItem(
                 (int) point1Helper.getX(), (int) point1Helper.getY(), distancePoint1Helper,
@@ -434,9 +434,9 @@ public class MainForm extends Application {
     private void calcSizeObjectMode(double xO, double yO, double pixelWSize, double pixelHSize, double l, double f) {
         calcDisplacement(Math.abs(xO + point1Helper.getX()) / 2, Math.abs(yO + point1Helper.getY() / 2));
         double deltaX = Math.abs(dx) * pixelWSize / 1000;
-        double distance = ((l / 1000) * (f / 1000) / deltaX);
-        double realWidth = distance * (Math.abs(xO - point1Helper.getX())) * pixelWSize / f;
-        double realHeight = distance * (Math.abs(yO - point1Helper.getY())) * pixelHSize / f;
+        double distance = Math.round(((l / 1000) * (f / 1000) / deltaX)*100.0)/100.0;
+        double realWidth = Math.round((distance * (Math.abs(xO - point1Helper.getX())) * pixelWSize / f)*100.0)/100.0;
+        double realHeight = Math.round((distance * (Math.abs(yO - point1Helper.getY())) * pixelHSize / f)*100.0)/100.0;
 
         addItem(new ObjectSizeItem(
                 (int) point1Helper.getX(),

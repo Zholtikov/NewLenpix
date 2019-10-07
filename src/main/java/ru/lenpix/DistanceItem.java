@@ -2,6 +2,7 @@ package ru.lenpix;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class DistanceItem implements IPaintable {
     private final int x;
@@ -18,15 +19,17 @@ public class DistanceItem implements IPaintable {
     public void paintOnPrimaryCanvas(GraphicsContext gc) {
         // TODO(vlad) избавиться от констант
         gc.setFill(Color.RED);
-        gc.fillText(Double.toString(distance), x - 10, y - 20);
         gc.fillOval(x - 4, y - 4, 8.0, 8.0);
+        gc.setFont(Font.font(15));
+        gc.fillText(Double.toString(distance), x - 10, y - 20);
     }
 
     @Override
     public void paintOnSecondaryCanvas(GraphicsContext gc, int dx, int dy) {
         gc.setFill(Color.RED);
-        gc.fillText(Double.toString(distance), x - 10 - dx, y - 20 - dy);
         gc.fillOval(x - 4 - dx, y - 4 - dy, 8.0, 8.0);
+        gc.setFont(Font.font(10));
+        gc.fillText(Double.toString(distance), x - 10 - dx, y - 20 - dy);
 
     }
 }

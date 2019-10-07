@@ -3,6 +3,7 @@ package ru.lenpix;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 
 public class DistanceBetweenObjectsItem implements IPaintable {
     private final int x1;
@@ -28,18 +29,12 @@ public class DistanceBetweenObjectsItem implements IPaintable {
     public void paintOnPrimaryCanvas(GraphicsContext gc) {
         // TODO(vlad) избавиться от констант
 
-        gc.setFill(Color.web("#4bf221"));
-        gc.fillText(Double.toString(distanceTo1Point), x1 + 15, y1 + 5);
-        gc.fillOval(x1 - 4, y1 - 4, 8.0, 8.0);
-
-        gc.setFill(Color.web("#4bf221"));
-        gc.fillText(Double.toString(distanceTo2Point), x2 + 15, y2 + 5);
-        gc.fillOval(x2 - 4, y2 - 4, 8.0, 8.0);
+        gc.setFont(Font.font(20));
 
         gc.setStroke(Color.RED);
         gc.setLineWidth(5);
         gc.strokeLine(x1, y1, x2, y2);
-        gc.setFill(Color.web("#4bf221"));
+        gc.setFill(Color.WHITE);
         if (Math.abs(y2 - y1) < 5) {
             gc.fillText(Double.toString(distanceBetween), (x1 + x2) / 2, (y1 + y2) / 2 + 10);
         } else {
