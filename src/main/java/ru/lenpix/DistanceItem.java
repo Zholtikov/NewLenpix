@@ -17,7 +17,7 @@ public class DistanceItem implements IPaintable {
 
     @Override
     public void paintOnPrimaryCanvas(GraphicsContext gc) {
-        // TODO(vlad) избавиться от констант
+        // TODO(vlad) избавиться от констант, подправить координаты
         gc.setFill(Color.RED);
         gc.fillOval(x - 4, y - 4, 8.0, 8.0);
         gc.setFont(Font.font(15));
